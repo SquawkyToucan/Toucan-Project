@@ -15,7 +15,7 @@ public class Toucans {
 	// Death through Conquered: You are taken over by another tribe.
 	// Death through Starvation: Not enough food!
 	// Death through Lack of Economy: Your interior and exterior economies are both at 0.
-	// Conceding/giving up
+	// Conceding/giving up - Button will be available for this if necessary
 	JFrame frame = new JFrame();
 	GamePanel gamePanel;
 	Toucans() {
