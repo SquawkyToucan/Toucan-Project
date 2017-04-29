@@ -1,4 +1,4 @@
-package Stuff;
+package Compute;
 
 import java.awt.Color;
 import java.awt.Graphics;
