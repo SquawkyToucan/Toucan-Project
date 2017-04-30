@@ -9,18 +9,27 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.imageio.ImageIO;
+
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer timer;
+	public static BufferedImage startscreen;
 	GamePanel() {
+		try {
+			startscreen = ImageIO.read(this.getCLass().getResourceAsStream("startscreen"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 		timer = new Timer(1000/60, this);
 	}
 	void startGame() {
 		timer.start();
 	}
 	public void paintComponent(Graphics g) {
-		g.setColor(new Color(0, 119, 187));
-		g.fillRect(0, 0, 1000, 1600);
+		g.drawImage(GamePanel.startscreen, 0, 0,1000, 1600, null);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
