@@ -1,8 +1,12 @@
 package Compute;
 
-import javax.swing.JFrame;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Toucans {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Toucans implements MouseListener {
 	// Toucans is a strategy game where the goal is to win
 	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K GDP + dependants, trade), or CIVILIZING
 	// Domination Victory: Every tile on the board is conquered. Enemies are vanquished.
@@ -14,21 +18,56 @@ public class Toucans {
 	// Death through Starvation: Not enough food!
 	// Death through Lack of Economy: Your economy and currency collapse - anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
-	JFrame frame = new JFrame();
+	JFrame startframe = new JFrame();
+	JPanel startpanel = new JPanel();
+	JFrame game = new JFrame();
 	GamePanel gamePanel;
 	Toucans() {
-		frame.setSize(1000, 1600);
-		frame.setVisible(true);
+		startframe.setSize(1000, 1600);
+		startframe.setVisible(true);
+		game.setSize(600, 900);
+		//Use like this - top 100 = Players, points
+		//next 600 down is game board (100x100) per piece
+		//(use JPanel and an image, then determine which block it is based off that)
+		//last 200 is bar with stuff like currency, and places to use troops and cut deals
 		gamePanel = new GamePanel();
 		setup();
 	}
 	void setup() {
-		frame.add(gamePanel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		startframe.add(gamePanel);
+		startframe.addMouseListener(this);
+		startframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gamePanel.startGame();
-		frame.addKeyListener(gamePanel);
+		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		startframe.addKeyListener(gamePanel);
 	}
 	public static void main(String[] args) {
 		Toucans runner = new Toucans();
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		game.setVisible(true);
+		startframe.setVisible(false);
+		//When u use .setVisible(false) ('_')
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
