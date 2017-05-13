@@ -44,6 +44,10 @@ public class Toucans implements MouseListener {
 	public static void main(String[] args) {
 		Toucans runner = new Toucans();
 	}
+	public void play() {
+		game.add(gamePanel);
+		gamePanel.createBoard();
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		game.setVisible(true);
