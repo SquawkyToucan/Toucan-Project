@@ -20,9 +20,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	Timer timer;
 	JPanel playpanel;
 	JButton[] buttons = new JButton[35];
-	Font big = new Font("Menlo", Font.BOLD, 72);
-	Font small = new Font("Menlo", Font.PLAIN, 36);
-	public static BufferedImage startscreen;
+	Font big = new Font("Menlo", Font.BOLD, 36);
+	Font small = new Font("Menlo", Font.PLAIN, 24);
 	GamePanel() {
 		timer = new Timer(1000/60, this);
 	}
@@ -31,22 +30,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 	public void paintComponent(Graphics g) {
 		g.setColor(new Color(0, 153, 85));
-		g.fillRect(0, 0, 1000, 1600);
+		g.fillRect(0, 0, Toucans.width, Toucans.height);
 		g.setColor(Color.WHITE);
 		g.setFont(big);
-		g.drawString("Creative Title", 190, 100);
+		g.drawString("Creative Title", 150, 100);
 		g.setFont(small);
 		g.drawString("Click to Start Game", 275, 300);
 	}
-	public void paintgame(Graphics g) {
-		g.setColor(new Color(0, 153, 85));
-		g.fillRect(0, 0, 1000, 1600); 
-	}
 	public void createBoard() {
 		int locx = 0;
-		int locy = 0;
+		int locy = 0; 
 		playpanel = new JPanel();
-		this.setLayout(new GridLayout(6, 6));
 		this.add(playpanel);
 		playpanel.addMouseListener(this);
 		for(int i = 0; i < 35; i++) {
@@ -82,13 +76,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//¡Hola! ¿Como estas? Muy bien, gracias. De nada. Hallo! Wie geht es dir? Mir gehts gut, danke! Bitte schon. 
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -101,3 +93,4 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		
 	}
 }
+//김종은임니다
