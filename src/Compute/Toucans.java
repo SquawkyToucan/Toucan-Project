@@ -26,6 +26,7 @@ public class Toucans implements MouseListener {
 	// Death through Lack of Economy: Your economy and currency collapse - anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
+	int[] status = new int[35];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
 	JPanel playpanel = new JPanel();
@@ -33,6 +34,7 @@ public class Toucans implements MouseListener {
 	GamePanel gamePanel;
 	public static final int width = 600;
 	public static final int height = 900;
+	boolean boardInitialized = false;
 
 	Toucans() {
 		startframe.setSize(width, height);
@@ -84,7 +86,14 @@ public class Toucans implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		createBoard();
+		if(!boardInitialized) {
+			createBoard();
+			boardInitialized = true;
+		}
+		else {
+			Object use = e.getSource();
+			//Get the number - Iʻm not sure how I can put them all through a little fancy loop so Iʻm going to hardcode it
+		}
 	}
 
 	@Override
