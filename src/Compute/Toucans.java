@@ -29,6 +29,8 @@ public class Toucans implements MouseListener {
 	int[] status = new int[35];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
+	JFrame options = new JFrame();
+	JPanel moves = new JPanel();
 	JPanel playpanel = new JPanel();
 	JFrame game = new JFrame();
 	GamePanel gamePanel;
@@ -91,7 +93,10 @@ public class Toucans implements MouseListener {
 			boardInitialized = true;
 		}
 		else {
-			Object use = e.getSource();
+			Object block = e.getSource();
+			//Blitz through the following: use Object to get source of block, then after Object do is the thing to do
+			//Take object do and do it to object block, be sure to start stuff like wars, etc.
+			System.out.println("Square accessed: " + block);
 			//Get the number - Iʻm not sure how I can put them all through a little fancy loop so Iʻm going to hardcode it
 		}
 	}
