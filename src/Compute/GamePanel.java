@@ -24,11 +24,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	void startGame() {
 		timer.start();
+		repaint();
 	}
 
 	public void paintComponent(Graphics g) {
 		g.setColor(new Color(0, 153, 85));
-		g.fillRect(0, 0, Toucans.width, Toucans.height);
+		g.fillRect(0, 0, 600, 900);
 		g.setColor(Color.WHITE);
 		g.setFont(big);
 		g.drawString("Creative Title", 150, 100);
