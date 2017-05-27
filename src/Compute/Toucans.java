@@ -1,5 +1,6 @@
 package Compute;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -55,7 +56,7 @@ public class Toucans implements MouseListener {
 		playpanel.setLayout(new GridLayout(6, 6));
 		for (int i = 0; i < 36; i++) {
 			buttons[i] = new JButton();
-			buttons[i].setSize(100, 100);
+			buttons[i].setPreferredSize(new Dimension(100, 100));
 			buttons[i].setLocation(locx * 100, locy * 100 + 100);
 			buttons[i].setVisible(true);
 			locx++;
