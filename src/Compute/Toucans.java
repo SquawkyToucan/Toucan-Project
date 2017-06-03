@@ -9,25 +9,28 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Toucans implements MouseListener, ActionListener {
 	// Toucans is a strategy game where the goal is to win
 	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K GDP + dependants, trade), or CIVILIZING
 	// Domination Victory: Every tile on the board is conquered. Enemies are vanquished.
-	// Technological Victory: 35 points worth of breakthrough, such as rockets, boats, etc. Can benefit military points
 	// Economical Victory: A combined sum of trade (per turn), subsidies to other tribes (per turn), production per
 	// turn, and GDP over 35K. On hard, if you near this all other countries will sanction you, meaning inner country
 	// must control majority of resources
-	// Civilizing Victory: Your society has a combination of currency (5p), trade relations (5p), healthcare (5p),
-	// internet (10p - from Tech), education (5p), mining (5p), a university (5p), literature (5p), language (10p), and
-	// a city all combined to over 35 points + a population over 1,000
 	// You can die through being CONQUERED or CONCEDING (lit lit lit lit lit)
 	// Death through Conquered: You are taken over by another tribe.
 	// Death through Starvation: Not enough food! (Food is gained via territory-population ratio. 10 food per square, and ratio must be at least 5:1)
 	// Death through Lack of Economy: Your economy and currency collapse - anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
+	int turnOf = 0;
+	int turns = 0;
+	int onepower = 0;
+	int twopower = 0;
+	int threepower = 0;
+	int fourpower = 0;
 	int[] status = new int[35];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
@@ -94,6 +97,10 @@ public class Toucans implements MouseListener, ActionListener {
 		if(!boardInitialized) {
 			createBoard();
 			boardInitialized = true;
+			status[0] = 1;
+			status[5] = 2;
+			status[30] = 3;
+			status[35] = 4;
 		}
 		else {
 			Object block = e.getSource();
@@ -108,18 +115,41 @@ public class Toucans implements MouseListener, ActionListener {
 			 * 24,25,26,27,28,29
 			 * 30,31,32,33,34,35
 			 * 
-			 * Toucan starts at 0
-			 * Parrot starts at 5
-			 * Macaw starts at 30
-			 * Eclectus Parrot starts at 35 ???
-			 * It doesn't matter if it initializes going down or sideways, just want to know
+			 * Toucan starts at 0 - Status is ONE
+			 * Parrot starts at 5 - Status is TWO
+			 * Macaw starts at 30 - Status is THREE
+			 * Eclectus Parrot starts at 35 - Status is FOUR
 			 */
-			if(block == buttons[0]) {
-				System.out.println("Received button 0");
+			
+			//This method could work, but I'm trying something else that's more efficient
+			
+			/*if(block == buttons[0]) {
+				String move = JOptionPane.showInputDialog("Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede");
+				if(move.equals("/claim")) {
+					if(status[0] != 0) {
+						System.out.println("This move is invalid - you cannot claim a claimed square.");
+					}
+				}
+				if(move.equals("/attack")) {
+					System.out.println("Sending units to square");
+					if(turnOf == 2) {
+						if(twopower > onepower + 1) {
+							System.out.println("Square taken");
+						}
+						else {
+							System.out.println("Failed to take square");
+						}
+					}
+				}
+				// TWO OPTIONS:
+				// - Command based - sets a "Selected" variable to this. Waits for input from user via command
+				// - GUI based - opens a frame that has all of the stuff
 			}
 			if(block == buttons[1]) {
-				System.out.println("Received button 1");
-			}
+
+			}*/
+			String move = JOptionPane.showInputDialog("Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede");
+			
 		}
 	}
 
