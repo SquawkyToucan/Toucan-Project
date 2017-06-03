@@ -150,6 +150,8 @@ public class Toucans implements MouseListener, ActionListener {
 			if(block == buttons[1]) {
 
 			}*/
+			
+			//How about this shows up every time that move is one? THEN it asks you to select the square you wish to move in on... making it a LOT more simple
 			String move = JOptionPane.showInputDialog("Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede");
 			
 		}
