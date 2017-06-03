@@ -24,7 +24,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	void startGame() {
 		timer.start();
-		repaint();
 	}
 
 	public void paintComponent(Graphics g) {

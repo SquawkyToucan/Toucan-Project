@@ -1,5 +1,6 @@
 package Compute;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,7 @@ public class Toucans implements MouseListener, ActionListener {
 	int twopower = 0;
 	int threepower = 0;
 	int fourpower = 0;
-	int[] status = new int[35];
+	int[] status = new int[36];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
 	JFrame options = new JFrame();
@@ -61,6 +62,7 @@ public class Toucans implements MouseListener, ActionListener {
 		JFrame frame = new JFrame();
 		frame.add(playpanel);
 		frame.setSize(600, 600);
+		frame.getContentPane().setBackground(new Color(0, 153, 85));
 		playpanel.addMouseListener(this);
 		playpanel.setLayout(new GridLayout(6, 6));
 		for (int i = 0; i < 36; i++) {
