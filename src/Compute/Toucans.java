@@ -2,6 +2,8 @@ package Compute;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Toucans implements MouseListener {
+public class Toucans implements MouseListener, ActionListener {
 	// Toucans is a strategy game where the goal is to win
 	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K GDP + dependants, trade), or CIVILIZING
 	// Domination Victory: Every tile on the board is conquered. Enemies are vanquished.
@@ -22,7 +24,7 @@ public class Toucans implements MouseListener {
 	// a city all combined to over 35 points + a population over 1,000
 	// You can die through being CONQUERED or CONCEDING (lit lit lit lit lit)
 	// Death through Conquered: You are taken over by another tribe.
-	// Death through Starvation: Not enough food!
+	// Death through Starvation: Not enough food! (Food is gained via territory-population ratio. 10 food per square, and ratio must be at least 5:1)
 	// Death through Lack of Economy: Your economy and currency collapse - anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
@@ -63,6 +65,7 @@ public class Toucans implements MouseListener {
 			buttons[i].setPreferredSize(new Dimension(100, 100));
 			buttons[i].setLocation(locx * 100, locy * 100 + 100);
 			buttons[i].setVisible(true);
+			buttons[i].addMouseListener(this);
 			locx++;
 			if (locx == 6) {
 				locy++;
@@ -96,8 +99,27 @@ public class Toucans implements MouseListener {
 			Object block = e.getSource();
 			//Blitz through the following: use Object to get source of block, then after Object do is the thing to do
 			//Take object do and do it to object block, be sure to start stuff like wars, etc.
-			System.out.println("Square accessed: " + block);
-			//Get the number - Iʻm not sure how I can put them all through a little fancy loop so Iʻm going to hardcode it
+			/**
+			 * Squares go by:?
+			 * 0,1,2,3,4,5
+			 * 6,7,8,9,10,11
+			 * 12,13,14,15,16,17
+			 * 18,19,20,21,22,23
+			 * 24,25,26,27,28,29
+			 * 30,31,32,33,34,35
+			 * 
+			 * Toucan starts at 0
+			 * Parrot starts at 5
+			 * Macaw starts at 30
+			 * Eclectus Parrot starts at 35 ???
+			 * It doesn't matter if it initializes going down or sideways, just want to know
+			 */
+			if(block == buttons[0]) {
+				System.out.println("Received button 0");
+			}
+			if(block == buttons[1]) {
+				System.out.println("Received button 1");
+			}
 		}
 	}
 
@@ -123,5 +145,11 @@ public class Toucans implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
