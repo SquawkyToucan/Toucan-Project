@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -88,6 +89,7 @@ public class Toucans implements MouseListener, ActionListener {
 			buttons[i].setLocation(locx * 100, locy * 100 + 100);
 			buttons[i].setVisible(true);
 			buttons[i].addMouseListener(this);
+			buttons[i].setBorder(BorderFactory.createLineBorder(new Color(0, 153, 87), 5));
 			locx++;
 			if (locx == 6) {
 				locy++;
@@ -155,10 +157,8 @@ public class Toucans implements MouseListener, ActionListener {
 			 * 
 			 * }
 			 */
-
-			// How about this shows up every time that move is one? THEN it asks
-			// you to select the square you wish to move in on... making it a
-			// LOT more simple
+			
+			//Player, not AI
 			if (turnOf == 1) {
 				String move = JOptionPane.showInputDialog(
 						"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
@@ -172,23 +172,54 @@ public class Toucans implements MouseListener, ActionListener {
 						turns++;
 					}
 				}
+				//Moves that DO NOT require usage of squares WHICH MAKES LIFE SO MUCH EASIER
 				if (move.equals("/train")) {
 					onepower++;
 					System.out.println("Player trained troops");
 					turnOf = 2;
 					turns++;
 				}
-				if(move.equals("/develop infrastructure")) {
-					int rand = new Random().nextInt(4);
+				if(move.equals("/develop tech")) {
+					//Tech is a gamble. You can win big (+5) or waste a turn (0), or turn out somewhere in between.
+					int rand = new Random().nextInt(5);
 					oneoutput = oneoutput + rand;
 					System.out.println("Player gained " + rand + " output");
+					turnOf = 2;
+					turns++;
 				}
 				if(move.equals("/develop education")) {
-					int rand = new Random().nextInt(1);
+					//Education earns less on gambling but is always positive
+					int rand = new Random().nextInt(2);
 					oneoutput = oneoutput + rand + 1;
 					System.out.println("Player gained " + (rand + 1) + " output");
+					turnOf = 2;
+					turns++;
 				}
+				if(move.equals("/develop infrastructure")) {
+					//Infrastructure is a solid investment but only gains 1
+					oneoutput++;
+					System.out.println("Player gained 1 output");
+					turnOf = 2;
+					turns++;
+				}
+				if(move.equals("/endmove")) {
+					System.out.println("Player checks action");
+					turnOf = 2;
+					turns++;
+				}
+				//Moves involving squares! OHH THE PAIN
+				
+				//AI Moves:
+				
 			}
+			//AI Move: Parrot
+			//Parrot will use rotating int - claim, train, dev, train, claim, dev...
+			
+			//AI Move: Macaw
+			//Macaw will play agressively - claim, train, claim, train, dev, train, dev...
+			
+			//AI Move: Eclectus Parrot
+			//Eclecty will play peacefully - dev, dev, claim, train...
 		}
 	}
 
