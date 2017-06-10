@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,23 +16,34 @@ import javax.swing.JPanel;
 
 public class Toucans implements MouseListener, ActionListener {
 	// Toucans is a strategy game where the goal is to win
-	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K GDP + dependants, trade), or CIVILIZING
-	// Domination Victory: Every tile on the board is conquered. Enemies are vanquished.
-	// Economical Victory: A combined sum of trade (per turn), subsidies to other tribes (per turn), production per
-	// turn, and GDP over 35K. On hard, if you near this all other countries will sanction you, meaning inner country
+	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K
+	// GDP + dependants, trade), or CIVILIZING
+	// Domination Victory: Every tile on the board is conquered. Enemies are
+	// vanquished.
+	// Economical Victory: A combined sum of trade (per turn), subsidies to
+	// other tribes (per turn), production per
+	// turn, and GDP over 35K. On hard, if you near this all other countries
+	// will sanction you, meaning inner country
 	// must control majority of resources
 	// You can die through being CONQUERED or CONCEDING (lit lit lit lit lit)
 	// Death through Conquered: You are taken over by another tribe.
-	// Death through Starvation: Not enough food! (Food is gained via territory-population ratio. 10 food per square, and ratio must be at least 5:1)
-	// Death through Lack of Economy: Your economy and currency collapse - anarchy happens.
+	// Death through Starvation: Not enough food! (Food is gained via
+	// territory-population ratio. 10 food per square, and ratio must be at
+	// least 5:1)
+	// Death through Lack of Economy: Your economy and currency collapse -
+	// anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
 	int turnOf = 0;
 	int turns = 0;
 	int onepower = 0;
+	int oneoutput  = 0;
 	int twopower = 0;
+	int twooutput = 0;
 	int threepower = 0;
+	int threeoutput = 0;
 	int fourpower = 0;
+	int fouroutput = 0;
 	int[] status = new int[36];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
@@ -50,10 +62,15 @@ public class Toucans implements MouseListener, ActionListener {
 		game.setSize(600, 900);
 		// Use like this - top 100 = Players, points
 		// next 600 down is game board (100x100) per piece
-		// (use JPanel and an image, then determine which block it is based off that)
-		// last 200 is bar with stuff like currency, and places to use troops and cut deals
+		// (use JPanel and an image, then determine which block it is based off
+		// that)
+		// last 200 is bar with stuff like currency, and places to use troops
+		// and cut deals
 		gamePanel = new GamePanel();
 		setup();
+		gamePanel.startGame();
+		turnOf = 1;
+		turns++;
 	}
 
 	public void createBoard() {
@@ -96,64 +113,82 @@ public class Toucans implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(!boardInitialized) {
+		if (!boardInitialized) {
 			createBoard();
 			boardInitialized = true;
 			status[0] = 1;
 			status[5] = 2;
 			status[30] = 3;
 			status[35] = 4;
-		}
-		else {
+		} else {
 			Object block = e.getSource();
-			//Blitz through the following: use Object to get source of block, then after Object do is the thing to do
-			//Take object do and do it to object block, be sure to start stuff like wars, etc.
+			// Blitz through the following: use Object to get source of block,
+			// then after Object do is the thing to do
+			// Take object do and do it to object block, be sure to start stuff
+			// like wars, etc.
 			/**
-			 * Squares go by:?
-			 * 0,1,2,3,4,5
-			 * 6,7,8,9,10,11
-			 * 12,13,14,15,16,17
-			 * 18,19,20,21,22,23
-			 * 24,25,26,27,28,29
-			 * 30,31,32,33,34,35
+			 * Squares go by:? 0,1,2,3,4,5 6,7,8,9,10,11 12,13,14,15,16,17
+			 * 18,19,20,21,22,23 24,25,26,27,28,29 30,31,32,33,34,35
 			 * 
-			 * Toucan starts at 0 - Status is ONE
-			 * Parrot starts at 5 - Status is TWO
-			 * Macaw starts at 30 - Status is THREE
-			 * Eclectus Parrot starts at 35 - Status is FOUR
+			 * Toucan starts at 0 - Status is ONE Parrot starts at 5 - Status is
+			 * TWO Macaw starts at 30 - Status is THREE Eclectus Parrot starts
+			 * at 35 - Status is FOUR
 			 */
-			
-			//This method could work, but I'm trying something else that's more efficient
-			
-			/*if(block == buttons[0]) {
-				String move = JOptionPane.showInputDialog("Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede");
-				if(move.equals("/claim")) {
-					if(status[0] != 0) {
-						System.out.println("This move is invalid - you cannot claim a claimed square.");
-					}
-				}
-				if(move.equals("/attack")) {
-					System.out.println("Sending units to square");
-					if(turnOf == 2) {
-						if(twopower > onepower + 1) {
-							System.out.println("Square taken");
-						}
-						else {
-							System.out.println("Failed to take square");
-						}
-					}
-				}
-				// TWO OPTIONS:
-				// - Command based - sets a "Selected" variable to this. Waits for input from user via command
-				// - GUI based - opens a frame that has all of the stuff
-			}
-			if(block == buttons[1]) {
 
-			}*/
-			
-			//How about this shows up every time that move is one? THEN it asks you to select the square you wish to move in on... making it a LOT more simple
-			String move = JOptionPane.showInputDialog("Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede");
-			
+			// This method could work, but I'm trying something else that's more
+			// efficient
+
+			/*
+			 * if(block == buttons[0]) { String move =
+			 * JOptionPane.showInputDialog(
+			 * "Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede"
+			 * ); if(move.equals("/claim")) { if(status[0] != 0) {
+			 * System.out.println(
+			 * "This move is invalid - you cannot claim a claimed square."); } }
+			 * if(move.equals("/attack")) { System.out.println(
+			 * "Sending units to square"); if(turnOf == 2) { if(twopower >
+			 * onepower + 1) { System.out.println("Square taken"); } else {
+			 * System.out.println("Failed to take square"); } } } // TWO
+			 * OPTIONS: // - Command based - sets a "Selected" variable to this.
+			 * Waits for input from user via command // - GUI based - opens a
+			 * frame that has all of the stuff } if(block == buttons[1]) {
+			 * 
+			 * }
+			 */
+
+			// How about this shows up every time that move is one? THEN it asks
+			// you to select the square you wish to move in on... making it a
+			// LOT more simple
+			if (turnOf == 1) {
+				String move = JOptionPane.showInputDialog(
+						"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
+				if (move.equals("/concede")) {
+					int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?");
+					if (confirm == JOptionPane.YES_OPTION) {
+						System.exit(0);
+					} else {
+						System.out.println("Aborted game ending!");
+						turnOf = 2;
+						turns++;
+					}
+				}
+				if (move.equals("/train")) {
+					onepower++;
+					System.out.println("Player trained troops");
+					turnOf = 2;
+					turns++;
+				}
+				if(move.equals("/develop infrastructure")) {
+					int rand = new Random().nextInt(4);
+					oneoutput = oneoutput + rand;
+					System.out.println("Player gained " + rand + " output");
+				}
+				if(move.equals("/develop education")) {
+					int rand = new Random().nextInt(1);
+					oneoutput = oneoutput + rand + 1;
+					System.out.println("Player gained " + (rand + 1) + " output");
+				}
+			}
 		}
 	}
 
@@ -184,6 +219,6 @@ public class Toucans implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
