@@ -89,7 +89,7 @@ public class Toucans implements MouseListener, ActionListener {
 			buttons[i].setLocation(locx * 100, locy * 100 + 100);
 			buttons[i].setVisible(true);
 			buttons[i].addMouseListener(this);
-			buttons[i].setBorder(BorderFactory.createLineBorder(new Color(0, 153, 87), 5));
+			buttons[i].setBorder(BorderFactory.createLineBorder(new Color(0, 153, 87), 10));
 			locx++;
 			if (locx == 6) {
 				locy++;
