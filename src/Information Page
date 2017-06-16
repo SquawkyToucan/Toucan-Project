@@ -1,5 +1,26 @@
 Information:
 
+
+The Board: 
+When claiming or attacking a square knowledge of the board is very helpful.
+  A  B  C  D  E  F
+1|A1 B1 C1 D1 E1 F1
+2|A2 B2 C2 D2 E2 F2
+3|A3 B3 C3 D3 E3 F3
+4|A4 B4 C4 D4 E4 F4
+5|A5 B5 C5 D5 E5 F5
+6|A6 B6 C6 D6 E6 F6
+
+Claiming a square is as simple as this - /claim <square identifier>
+An example would be /claim B1 as a first move
+
+Attacking a square is also used in the same way - /attack <square identifier>
+An example would be /attack F1 for a knockout on the Parrot Tribe
+
+Keep in mind that you cannot claim a square that is occupied and you cannot attack an empty square.
+
+It's always smart to expand logically. Try always using squares as buffers rather than important pieces of land,
+because by doing so you allow for easier developing. 
 Players:
 Parrot usually plays with moderation. They have a mix of training, claiming, and developing themselves. They traditionally win from combo.
 Macaw usually plays aggresively. They train and claim more than they develop but maintain enough to keep alive. They traditionally win from conquering.
