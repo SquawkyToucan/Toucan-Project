@@ -198,7 +198,8 @@ public class Toucans implements MouseListener, ActionListener {
 				if(move.equals("/develop infrastructure")) {
 					//Infrastructure is a solid investment but only gains 1
 					oneoutput++;
-					System.out.println("Player gained 1 output");
+					oneoutput++;
+					System.out.println("Player gained 2 output");
 					turnOf = 2;
 					turns++;
 				}
@@ -208,7 +209,15 @@ public class Toucans implements MouseListener, ActionListener {
 					turns++;
 				}
 				//Moves involving squares! OHH THE PAIN
-				
+				/*
+				 * How to attain square number with <letter><number>
+				 * get char array for last two chars
+				 * if(char[0] == 'A') {
+				 * 	int square = -1 + char[1];
+				 * ...
+				 * 
+				 * and so on for A-F
+				 */
 				//AI Moves:
 				
 			}
@@ -216,7 +225,7 @@ public class Toucans implements MouseListener, ActionListener {
 			//Parrot will use rotating int - claim, train, dev, train, claim, dev...
 			
 			//AI Move: Macaw
-			//Macaw will play agressively - claim, train, claim, train, dev, train, dev...
+			//Macaw will play aggressively - claim, train, claim, train, dev, train, dev...
 			
 			//AI Move: Eclectus Parrot
 			//Eclecty will play peacefully - dev, dev, claim, train...
