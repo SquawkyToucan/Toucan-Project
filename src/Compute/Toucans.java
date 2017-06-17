@@ -48,10 +48,9 @@ public class Toucans implements MouseListener, ActionListener {
 	int[] status = new int[36];
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
-	JFrame options = new JFrame();
 	JPanel moves = new JPanel();
 	JPanel playpanel = new JPanel();
-	JFrame game = new JFrame();
+	
 	GamePanel gamePanel;
 	public static final int width = 600;
 	public static final int height = 900;
@@ -60,7 +59,6 @@ public class Toucans implements MouseListener, ActionListener {
 	Toucans() {
 		startframe.setSize(width, height);
 		startframe.setVisible(true);
-		game.setSize(600, 900);
 		// Use like this - top 100 = Players, points
 		// next 600 down is game board (100x100) per piece
 		// (use JPanel and an image, then determine which block it is based off
@@ -68,6 +66,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// last 200 is bar with stuff like currency, and places to use troops
 		// and cut deals
 		gamePanel = new GamePanel();
+		gamePanel.setSize(600, 900);
 		setup();
 		gamePanel.startGame();
 		turnOf = 1;
@@ -104,8 +103,6 @@ public class Toucans implements MouseListener, ActionListener {
 		startframe.add(gamePanel);
 		startframe.addMouseListener(this);
 		startframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		gamePanel.startGame();
-		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		startframe.addKeyListener(gamePanel);
 	}
 
@@ -136,94 +133,199 @@ public class Toucans implements MouseListener, ActionListener {
 			 * TWO Macaw starts at 30 - Status is THREE Eclectus Parrot starts
 			 * at 35 - Status is FOUR
 			 */
-
-			// This method could work, but I'm trying something else that's more
-			// efficient
-
-			/*
-			 * if(block == buttons[0]) { String move =
-			 * JOptionPane.showInputDialog(
-			 * "Playing on selected square:\n- /claim\n- /attack\n- /develop <infrastructure, tech, education>\n- /train\n- /endmove\n- /concede"
-			 * ); if(move.equals("/claim")) { if(status[0] != 0) {
-			 * System.out.println(
-			 * "This move is invalid - you cannot claim a claimed square."); } }
-			 * if(move.equals("/attack")) { System.out.println(
-			 * "Sending units to square"); if(turnOf == 2) { if(twopower >
-			 * onepower + 1) { System.out.println("Square taken"); } else {
-			 * System.out.println("Failed to take square"); } } } // TWO
-			 * OPTIONS: // - Command based - sets a "Selected" variable to this.
-			 * Waits for input from user via command // - GUI based - opens a
-			 * frame that has all of the stuff } if(block == buttons[1]) {
-			 * 
-			 * }
-			 */
 			
 			//Player, not AI
 			if (turnOf == 1) {
 				String move = JOptionPane.showInputDialog(
 						"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
 				if (move.equals("/concede")) {
-					int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?");
-					if (confirm == JOptionPane.YES_OPTION) {
-						System.exit(0);
-					} else {
-						System.out.println("Aborted game ending!");
-						turnOf = 2;
-						turns++;
-					}
+					concede();
 				}
 				//Moves that DO NOT require usage of squares WHICH MAKES LIFE SO MUCH EASIER
 				if (move.equals("/train")) {
-					onepower++;
-					System.out.println("Player trained troops");
-					turnOf = 2;
-					turns++;
+					train();
 				}
 				if(move.equals("/develop tech")) {
-					//Tech is a gamble. You can win big (+5) or waste a turn (0), or turn out somewhere in between.
-					int rand = new Random().nextInt(5);
-					oneoutput = oneoutput + rand;
-					System.out.println("Player gained " + rand + " output");
-					turnOf = 2;
-					turns++;
+					devTech();
 				}
 				if(move.equals("/develop education")) {
-					//Education earns less on gambling but is always positive
-					int rand = new Random().nextInt(2);
-					oneoutput = oneoutput + rand + 1;
-					System.out.println("Player gained " + (rand + 1) + " output");
-					turnOf = 2;
-					turns++;
+					devEdu();
 				}
 				if(move.equals("/develop infrastructure")) {
-					//Infrastructure is a solid investment but only gains 1
-					oneoutput++;
-					oneoutput++;
-					System.out.println("Player gained 2 output");
-					turnOf = 2;
-					turns++;
+					devInfrastructure();
 				}
 				if(move.equals("/endmove")) {
-					System.out.println("Player checks action");
-					turnOf = 2;
-					turns++;
+					check();
 				}
 				if(move.contains("/claim")) {
 					char[] findSquare=move.toCharArray();
 					char column = findSquare[findSquare.length - 2];
 					char row = findSquare[findSquare.length - 1];
 					System.out.println(column + " " + row);
+					int notChar = Integer.parseInt(row + "");
+					int numToCheck = 0;
+					//Find numToCheck
+					if(column == 'A'||column == 'a') {
+						numToCheck = -1 + notChar;
+					}
+					if(column == 'B'||column == 'b') {
+						numToCheck = 5 + notChar;
+					}
+					if(column == 'C'||column == 'c') {
+						numToCheck = 11 + notChar;
+					}
+					if(column == 'D'||column == 'd') {
+						numToCheck = 17 + notChar;
+					}
+					if(column == 'E'||column == 'e') {
+						numToCheck = 23 + notChar;
+					}
+					if(column == 'F'||column == 'f') {
+						numToCheck = 29 + notChar;
+					}
+					//Claim or check on
+					if(status[numToCheck] == 0) {
+						status[numToCheck] = 1;
+						System.out.println("Square claimed successfully");
+					}
+					else {
+						System.out.println("You can't claim an occupied square, silly!");
+					}
+					check();
 				}
-				//Moves involving squares! OHH THE PAIN
-				/*
-				 * How to attain square number with <letter><number>
-				 * get char array for last two chars
-				 * if(char[0] == 'A') {
-				 * 	int square = -1 + char[1];
-				 * ...
-				 * 
-				 * and so on for A-F
-				 */
+				if(move.contains("/attack")) {
+					char[] findSquare=move.toCharArray();
+					char column = findSquare[findSquare.length - 2];
+					char row = findSquare[findSquare.length - 1];
+					System.out.println(column + " " + row);
+					int notChar = Integer.parseInt(row + "");
+					int numToCheck = 0;
+					//Find numToCheck
+					if(column == 'A'||column == 'a') {
+						numToCheck = -1 + notChar;
+					}
+					if(column == 'B'||column == 'b') {
+						numToCheck = 5 + notChar;
+					}
+					if(column == 'C'||column == 'c') {
+						numToCheck = 11 + notChar;
+					}
+					if(column == 'D'||column == 'd') {
+						numToCheck = 17 + notChar;
+					}
+					if(column == 'E'||column == 'e') {
+						numToCheck = 23 + notChar;
+					}
+					if(column == 'F'||column == 'f') {
+						numToCheck = 29 + notChar;
+					}
+					//Is square occupied?
+					if(status[numToCheck] == 0 || status[numToCheck] == 1) {
+						System.out.println("Error attacking square: No occupying army to attack, or this square belongs to you");
+						if(status[numToCheck] != 1) {
+							int claimInstead = JOptionPane.showConfirmDialog(null, "Do you want to claim this square instead?");
+							if(claimInstead == JOptionPane.YES_OPTION) {
+								status[numToCheck] = 1;
+								System.out.println("Square claimed!");
+							}
+							else {
+								System.out.println("Square not taken!");
+								check();
+							}
+						}
+						else {
+							System.out.println("This square is yours! If you want to end the game, play /concede on your next move");
+						}
+					}
+					else {
+						//Attacking the square! Yay!
+						if(status[numToCheck] == 2) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							//Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(2);
+							//Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + twopower;
+							if(attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - twopower);
+								twopower = twopower - (onepower - twopower + 2);
+								twooutput = twooutput - 1;
+							}
+							else if(attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (twopower - onepower - 1);
+								twopower = twopower - (twopower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							}
+							else {
+								onepower = onepower - 1;
+								twopower = twopower - 1;
+								oneoutput = oneoutput - 1;
+								twooutput = twooutput - 1;
+							}
+						}
+						if(status[numToCheck] == 3) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							//Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(2);
+							//Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + threepower;
+							if(attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - threepower);
+								threepower = threepower - (onepower - threepower + 2);
+								threeoutput = threeoutput - 1;
+							}
+							else if(attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (threepower - onepower - 1);
+								threepower = threepower - (threepower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							}
+							else {
+								onepower = onepower - 1;
+								threepower = threepower - 1;
+								oneoutput = oneoutput - 1;
+								threeoutput = threeoutput - 1;
+							}
+						}
+						if(status[numToCheck] == 4) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							//Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(2);
+							//Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + fourpower;
+							if(attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - fourpower);
+								fourpower = fourpower - (onepower - fourpower + 2);
+								fouroutput = fouroutput - 1;
+							}
+							else if(attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (fourpower - onepower - 1);
+								fourpower = fourpower - (fourpower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							}
+							else {
+								onepower = onepower - 1;
+								fourpower = fourpower - 1;
+								oneoutput = oneoutput - 1;
+								fouroutput = fouroutput - 1;
+							}
+						}
+					}
+					check();
+				}
 				//AI Moves:
 				
 			}
@@ -237,7 +339,51 @@ public class Toucans implements MouseListener, ActionListener {
 			//Eclecty will play peacefully - dev, dev, claim, train...
 		}
 	}
-
+	public void concede() {
+		int confirm = JOptionPane.showConfirmDialog(null, "Are you sure?");
+		if (confirm == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		} else {
+			System.out.println("Aborted game ending!");
+			turnOf = 2;
+			turns++;
+		}
+	}
+	public void train() {
+		onepower++;
+		System.out.println("Player trained troops");
+		turnOf = 2;
+		turns++;
+	}
+	public void devTech() {
+		//Tech is a gamble. You can win big (+5) or waste a turn (0), or turn out somewhere in between.
+		int rand = new Random().nextInt(5);
+		oneoutput = oneoutput + rand;
+		System.out.println("Player gained " + rand + " output");
+		turnOf = 2;
+		turns++;
+	}
+	public void devEdu() {
+		//Education earns less on gambling but is always positive
+		int rand = new Random().nextInt(2);
+		oneoutput = oneoutput + rand + 1;
+		System.out.println("Player gained " + (rand + 1) + " output");
+		turnOf = 2;
+		turns++;
+	}
+	public void devInfrastructure() {
+		//Infrastructure is a solid investment but only gains 1
+		oneoutput++;
+		oneoutput++;
+		System.out.println("Player gained 2 output");
+		turnOf = 2;
+		turns++;
+	}
+	public void check() {
+		System.out.println("Player checks action");
+		turnOf = 2;
+		turns++;
+	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 
