@@ -21,6 +21,8 @@ Keep in mind that you cannot claim a square that is occupied and you cannot atta
 
 It's always smart to expand logically. Try always using squares as buffers rather than important pieces of land,
 because by doing so you allow for easier developing. 
+
+Although you can technically create colonies, it really isn't worth it, as they're easily attacked and don't provide any buffer value.
 Players:
 Parrot usually plays with moderation. They have a mix of training, claiming, and developing themselves. They traditionally win from combo.
 Macaw usually plays aggresively. They train and claim more than they develop but maintain enough to keep alive. They traditionally win from conquering.
@@ -37,6 +39,14 @@ Attacking:
 Attack another square that has been claimed by another power. Depending on
 the military power that you have in comparison to theirs with a few random
 tweaks, you may or may not take the square.
+
+You can be given anything from a disadvantage of three to an advantage of three, while the opponent can be given anything from no advatage to two advantage.
+
+After the battle, if you win, you lose the remainder of your troops and theirs, while they lose the same but keep two.
+If you lose, you lose the remainder and one while the opponent loses the remainder but gains one from excited new recruits.
+If there is a stalemate each person loses one. The square does not change hands.
+
+Remember, the loser of the battle will suffer 1K on their GDP. In a stalemate each side will lose 1K.
 
 Training:
 Training troops will boost your military power, making it more likely that you will
