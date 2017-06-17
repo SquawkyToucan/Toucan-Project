@@ -208,6 +208,12 @@ public class Toucans implements MouseListener, ActionListener {
 					turnOf = 2;
 					turns++;
 				}
+				if(move.contains("/claim")) {
+					char[] findSquare=move.toCharArray();
+					char column = findSquare[findSquare.length - 2];
+					char row = findSquare[findSquare.length - 1];
+					System.out.println(column + " " + row);
+				}
 				//Moves involving squares! OHH THE PAIN
 				/*
 				 * How to attain square number with <letter><number>
