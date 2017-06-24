@@ -501,9 +501,37 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			else {
 				//Corner squares! Yay!
+				if(square == 0) {
+					nums = new int[2];
+					nums[0] = 1;
+					nums[1] = 6;
+					nums[2] = 7;
+					return nums;
+				}
+				else if(square == 5) {
+					nums = new int[2];
+					nums[0] = 4;
+					nums[1] = 10;
+					nums[2] = 11;
+					return nums;
+				}
+				else if(square == 30) {
+					nums = new int[2];
+					nums[0] = 24;
+					nums[1] = 25;
+					nums[2] = 31;
+					return nums;
+				}
+				else {
+					nums = new int[2];
+					nums[0] = 28;
+					nums[1] = 29;
+					nums[2] = 34;
+					return nums;
+				}
+			}
 			}
 		}
-	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 
