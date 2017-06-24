@@ -41,11 +41,32 @@ public class Toucans implements MouseListener, ActionListener {
 	int oneoutput  = 0;
 	int twopower = 0;
 	int twooutput = 0;
+	int twopattern = 1;
 	int threepower = 0;
 	int threeoutput = 0;
+	int threepattern = 1;
 	int fourpower = 0;
+	int fourpattern = 1;
 	int fouroutput = 0;
 	int[] status = new int[36];
+	//Wars available: 
+	/*
+	 * 1 - Toucan, Parrot
+	 * 2 - Toucan, Macaw
+	 * 3 - Toucan, Eclectus
+	 * 4 - Parrot, Macaw
+	 * 5 - Parrot, Eclectus
+	 * 6 - Macaw, Eclectus
+	 * 
+	 */
+	
+	boolean warOne = false;
+	boolean warTwo = false;
+	boolean warThree = false;
+	boolean warFour = false;
+	boolean warFive = false;
+	boolean warSix = false;
+	
 	JFrame startframe = new JFrame();
 	JPanel startpanel = new JPanel();
 	JPanel moves = new JPanel();
@@ -331,6 +352,26 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			//AI Move: Parrot
 			//Parrot will use rotating int - claim, train, dev, train, claim, dev...
+			if(turnOf == 2) {
+				if(twopattern % 6 == 1/6) {
+					aiClaim();
+				}
+				if(twopattern % 6 == 1/3) {
+					
+				}
+				if(twopattern % 6 == 1/2) {
+					
+				}
+				if(twopattern % 6 == 2/3) {
+					
+				}
+				if(twopattern % 6 == 5/6) {
+					aiClaim();
+				}
+				if(twopattern % 6 == 1) {
+					
+				}
+			}
 			
 			//AI Move: Macaw
 			//Macaw will play aggressively - claim, train, claim, train, dev, train, dev...
@@ -383,6 +424,31 @@ public class Toucans implements MouseListener, ActionListener {
 		System.out.println("Player checks action");
 		turnOf = 2;
 		turns++;
+	}
+	public void aiClaim() {
+		//Step One: At war? If yes, see 1, if no, see 2
+		//1. Target the enemy
+		//2. Create list of next squares. If at least one is unnocupied, see 3, else, see 4
+		//3. Pick random number. Claim that square.
+		//4. Pick someone to be at war with! See 5
+		//5. Use random number of the enemy's squares to generate target
+		
+		//Step One!
+		if(turnOf == 2) {
+			
+		}
+	}
+	public int[] determineNeighbors(int square) {
+		int[] nums;
+		if(square != 0 || square!= 1 || square != 2 || square != 3 || square != 4 || square != 5 || square != 6 || square != 11 ||
+				square != 12 || square!= 17 || square != 18 || square != 23 || square != 24 || square != 29 || square != 30 || square != 31 ||
+				square != 32|| square!= 33 || square != 34 || square != 35) {
+			//Internal squares with all corners
+			nums = new int[7];
+			nums[0] = square - 7;
+			nums[1] = square - 6;
+			nums[2] = square - 5;
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
