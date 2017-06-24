@@ -440,14 +440,68 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 	public int[] determineNeighbors(int square) {
 		int[] nums;
-		if(square != 0 || square!= 1 || square != 2 || square != 3 || square != 4 || square != 5 || square != 6 || square != 11 ||
-				square != 12 || square!= 17 || square != 18 || square != 23 || square != 24 || square != 29 || square != 30 || square != 31 ||
-				square != 32|| square!= 33 || square != 34 || square != 35) {
+		if(square != 0 && square!= 1 && square != 2 && square != 3 && square != 4 && square != 5 && square != 6 && square != 11 &&
+				square != 12 && square!= 17 && square != 18 && square != 23 && square != 24 && square != 29 && square != 30 && square != 31 &&
+				square != 32&& square!= 33 && square != 34 && square != 35) {
 			//Internal squares with all corners
 			nums = new int[7];
 			nums[0] = square - 7;
 			nums[1] = square - 6;
 			nums[2] = square - 5;
+			nums[3] = square--;
+			nums[4] = square++;
+			nums[5] = square + 5;
+			nums[6] = square + 6;
+			nums[7] = square + 7;
+			//It's symetrical!
+			return nums;
+		}
+		else {
+			//Checking non-internal squares to see if they are corner or line
+			if(square != 0 && square != 5 && square != 30 && square != 35) {
+				//Line squares, non-internal - now which side
+				if(square > 0 && square < 5) {
+					nums = new int[4];
+					nums[0] = square--;
+					nums[1] = square++;
+					nums[2] = square + 5;
+					nums[3] = square + 6;
+					nums[4] = square + 7;
+					return nums;
+				}
+				else if(square == 11 || square == 17 || square == 23 || square == 29) {
+					nums = new int[4];
+					nums[0] = square - 7;
+					nums[1] = square - 6;
+					nums[2] = square--;
+					nums[3] = square + 5;
+					nums[4] = square + 6;
+					//Yeet - also semisymetrical
+					return nums;
+				}
+				else if(square == 6 || square == 12 || square == 18 || square == 24) {
+					nums = new int[4];
+					nums[0] = square - 6;
+					nums[1] = square - 5;
+					nums[2] = square++;
+					nums[3] = square + 6;
+					nums[4] = square + 7;
+					//Yeet - also semisymetrical
+					return nums;
+				}
+				else {
+					nums = new int[4];
+					nums[0] = square--;
+					nums[1] = square++;
+					nums[2] = square - 5;
+					nums[3] = square - 6;
+					nums[4] = square - 7;
+					return nums;
+				}
+			}
+			else {
+				//Corner squares! Yay!
+			}
 		}
 	}
 	@Override
