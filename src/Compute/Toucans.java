@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -534,19 +535,20 @@ public class Toucans implements MouseListener, ActionListener {
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public ArrayList findOptionsForAttackingAndClaiming(int player) {
+	public int[] findOptionsForAttackingAndClaiming(int player) {
 		//Use int player to determine the attacking options (or to see if a move is illegal)
 		@SuppressWarnings("rawtypes")
-		ArrayList options = new ArrayList();
+		ArrayList<Integer> options= new ArrayList<Integer>();
 		for(int i = 0; i < 37; i++) {
 			if(status[i] == player) {
 				//If the status of square "i" is equal to the player, add the neighbors
-				options.add(determineNeighbors(i));
+				
+				//I need something to add items to the contents of one int[] into another
 			}
 		}
 		for(int i = 0; i < options.size() + 1; i++) {
 			//Run through the method
-			if(status[(int) options.get(i)] == player) {
+			if(status[options.get(i)] == player) {
 				//If the status of any of the neighbors is the player, disregard it
 				options.remove(i);
 				i--;
@@ -555,10 +557,7 @@ public class Toucans implements MouseListener, ActionListener {
 				System.out.println("Neighbor detected at " + (int)options.get(i));
 			}
 		}
-		for(int i = 0; i < options.size() + 1; i++) {
-			options.get(i) = (int)options.get(i);
-		}
-		return options;
+
 		/*
 		 * Step One: Go through all squares.
 		 * Step Two: Anazlyze - if status = player, run the findOps method and add those to array
