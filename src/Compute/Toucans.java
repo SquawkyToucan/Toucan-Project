@@ -534,36 +534,6 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 		}
 	}
-	@SuppressWarnings("unchecked")
-	public int[] findOptionsForAttackingAndClaiming(int player) {
-		//Use int player to determine the attacking options (or to see if a move is illegal)
-		@SuppressWarnings("rawtypes")
-		ArrayList<Integer> options= new ArrayList<Integer>();
-		for(int i = 0; i < 37; i++) {
-			if(status[i] == player) {
-				//If the status of square "i" is equal to the player, add the neighbors
-				
-				//I need something to add items to the contents of one int[] into another
-			}
-		}
-		for(int i = 0; i < options.size() + 1; i++) {
-			//Run through the method
-			if(status[options.get(i)] == player) {
-				//If the status of any of the neighbors is the player, disregard it
-				options.remove(i);
-				i--;
-			}
-			else {
-				System.out.println("Neighbor detected at " + (int)options.get(i));
-			}
-		}
-
-		/*
-		 * Step One: Go through all squares.
-		 * Step Two: Anazlyze - if status = player, run the findOps method and add those to array
-		 * Step Three: Return the int[]
-		 */
-	}
 	public boolean moveIsLegal() {
 		//Find Options for attacking - go through for() loop to determine if the move is legal
 		return false;
