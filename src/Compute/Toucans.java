@@ -259,7 +259,7 @@ public class Toucans implements MouseListener, ActionListener {
 							int luck = new Random().nextInt(6);
 							int actualLuck = luck - 3;
 							//Gives options -3 through 3
-							int oppoLuck = new Random().nextInt(2);
+							int oppoLuck = new Random().nextInt(3);
 							//Battle Numbers - Who Wins?
 							int attackingForce = actualLuck + onepower;
 							int defendingForce = oppoLuck + twopower;
