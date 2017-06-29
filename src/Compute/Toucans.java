@@ -50,15 +50,19 @@ public class Toucans implements MouseListener, ActionListener {
 	int fouroutput = 0;
 	int[] status = new int[36];
 	//Wars available: 
-	/*
+	/**
 	 * 1 - Toucan, Parrot
 	 * 2 - Toucan, Macaw
 	 * 3 - Toucan, Eclectus
 	 * 4 - Parrot, Macaw
-	 * 5 - Parrot, Eclectus
-	 * 6 - Macaw, Eclectus
+	 * 5 - Macaw, Eclectus
+	 * 6 - Parrot, Eclectus
 	 * 
 	 */
+	
+	//Most likely, wars will mostly involve macaw and toucan
+	//This is because one is the "I'm great!" player and the other is agreesive AI
+	//This hopefully explains the odd ordering of wars
 	
 	boolean warOne = false;
 	boolean warTwo = false;
@@ -80,12 +84,6 @@ public class Toucans implements MouseListener, ActionListener {
 	Toucans() {
 		startframe.setSize(width, height);
 		startframe.setVisible(true);
-		// Use like this - top 100 = Players, points
-		// next 600 down is game board (100x100) per piece
-		// (use JPanel and an image, then determine which block it is based off
-		// that)
-		// last 200 is bar with stuff like currency, and places to use troops
-		// and cut deals
 		gamePanel = new GamePanel();
 		gamePanel.setSize(600, 900);
 		setup();
@@ -147,9 +145,6 @@ public class Toucans implements MouseListener, ActionListener {
 			// Take object do and do it to object block, be sure to start stuff
 			// like wars, etc.
 			/**
-			 * Squares go by:? 0,1,2,3,4,5 6,7,8,9,10,11 12,13,14,15,16,17
-			 * 18,19,20,21,22,23 24,25,26,27,28,29 30,31,32,33,34,35
-			 * 
 			 * Toucan starts at 0 - Status is ONE Parrot starts at 5 - Status is
 			 * TWO Macaw starts at 30 - Status is THREE Eclectus Parrot starts
 			 * at 35 - Status is FOUR
@@ -351,7 +346,7 @@ public class Toucans implements MouseListener, ActionListener {
 				
 			}
 			//AI Move: Parrot
-			//Parrot will use rotating int - claim, train, dev, train, claim, dev...
+			//Parrot will use rotating int - train, claim, dev, train, claim, dev...
 			if(turnOf == 2) {
 				if(twopattern % 6 == 1/6) {
 					aiClaim();
@@ -374,10 +369,13 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			
 			//AI Move: Macaw
-			//Macaw will play aggressively - claim, train, claim, train, dev, train, dev...
+			//Macaw will play aggressively - train, claim, claim, train, dev, train, dev...
 			
 			//AI Move: Eclectus Parrot
-			//Eclecty will play peacefully - dev, dev, claim, train...
+			//Eclecty will play peacefully - train, dev, dev, claim...
+			
+			//Only reason every group starts with train is to ensure that an early assault is not successful
+			
 		}
 	}
 	public void concede() {
