@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	Timer timer;
 	Font big = new Font("Menlo", Font.BOLD, 36);
