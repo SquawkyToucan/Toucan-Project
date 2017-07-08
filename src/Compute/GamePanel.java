@@ -66,7 +66,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// ¡Hola! ¿Como estas? Muy bien, gracias. De nada. Hallo! Wie geht es dir? Mir gehts gut, danke! Bitte schon.
 	}
 
 	@Override
