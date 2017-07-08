@@ -198,11 +198,16 @@ public class Toucans implements MouseListener, ActionListener {
 						numToCheck = 29 + notChar;
 					}
 					// Claim or check on
-					if (status[numToCheck] == 0) {
-						status[numToCheck] = 1;
-						System.out.println("Square claimed successfully");
-					} else {
-						System.out.println("You can't claim an occupied square, silly!");
+					if(moveIsLegal(numToCheck)) {
+						if (status[numToCheck] == 0) {
+							status[numToCheck] = 1;
+							System.out.println("Square claimed successfully");
+						} else {
+							System.out.println("You can't claim an occupied square, silly!");
+						}
+					}
+					else {
+						System.out.println("That square is too far away, silly!");
 					}
 					check();
 				}
@@ -455,7 +460,7 @@ public class Toucans implements MouseListener, ActionListener {
 				&& square != 29 && square != 30 && square != 31 && square != 32 && square != 33 && square != 34
 				&& square != 35) {
 			// Internal squares with all corners
-			nums = new int[7];
+			nums = new int[8];
 			nums[0] = square - 7;
 			nums[1] = square - 6;
 			nums[2] = square - 5;
@@ -471,7 +476,7 @@ public class Toucans implements MouseListener, ActionListener {
 			if (square != 0 && square != 5 && square != 30 && square != 35) {
 				// Line squares, non-internal - now which side
 				if (square > 0 && square < 5) {
-					nums = new int[4];
+					nums = new int[5];
 					nums[0] = square--;
 					nums[1] = square++;
 					nums[2] = square + 5;
@@ -479,7 +484,7 @@ public class Toucans implements MouseListener, ActionListener {
 					nums[4] = square + 7;
 					return nums;
 				} else if (square == 11 || square == 17 || square == 23 || square == 29) {
-					nums = new int[4];
+					nums = new int[5];
 					nums[0] = square - 7;
 					nums[1] = square - 6;
 					nums[2] = square--;
@@ -488,7 +493,7 @@ public class Toucans implements MouseListener, ActionListener {
 					// Yeet - also semisymetrical
 					return nums;
 				} else if (square == 6 || square == 12 || square == 18 || square == 24) {
-					nums = new int[4];
+					nums = new int[5];
 					nums[0] = square - 6;
 					nums[1] = square - 5;
 					nums[2] = square++;
@@ -497,7 +502,7 @@ public class Toucans implements MouseListener, ActionListener {
 					// Yeet - also semisymetrical
 					return nums;
 				} else {
-					nums = new int[4];
+					nums = new int[5];
 					nums[0] = square--;
 					nums[1] = square++;
 					nums[2] = square - 5;
@@ -508,25 +513,25 @@ public class Toucans implements MouseListener, ActionListener {
 			} else {
 				// Corner squares! Yay!
 				if (square == 0) {
-					nums = new int[2];
+					nums = new int[3];
 					nums[0] = 1;
 					nums[1] = 6;
 					nums[2] = 7;
 					return nums;
 				} else if (square == 5) {
-					nums = new int[2];
+					nums = new int[3];
 					nums[0] = 4;
 					nums[1] = 10;
 					nums[2] = 11;
 					return nums;
 				} else if (square == 30) {
-					nums = new int[2];
+					nums = new int[3];
 					nums[0] = 24;
 					nums[1] = 25;
 					nums[2] = 31;
 					return nums;
 				} else {
-					nums = new int[2];
+					nums = new int[3];
 					nums[0] = 28;
 					nums[1] = 29;
 					nums[2] = 34;
