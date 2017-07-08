@@ -436,6 +436,8 @@ public class Toucans implements MouseListener, ActionListener {
 		System.out.println("Player checks action");
 		turnOf = 2;
 		turns++;
+		System.out.println("\n\nAI playing...");
+		// Backlash n FOUR TIMES on next console action
 	}
 
 	public void aiClaim() {
