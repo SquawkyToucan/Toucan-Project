@@ -396,17 +396,61 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				twopattern++;
 			}
-			if(turnOf == 3) {
-				
-			}
-
 			// AI Move: Macaw
 			// Macaw will play aggressively - train, claim, claim, train, dev,
-			// train, dev...
-
+			// train, dev... (7)
+			if(turnOf == 3) {
+				if(threepattern % 7 == 1/7) {
+					//Train troops for Macaw
+					int armiesProduced = new Random().nextInt(2) + 1;
+					threepower = threepower + armiesProduced;
+					System.out.println("Macaw trained " + armiesProduced + " troops");
+					check();
+				}
+				if(threepattern % 7 == 2/7) {
+					//Claim a square for Macaw
+					aiClaim();
+					check();
+				}
+				if(threepattern % 7 == 3/7) {
+					//Claim a square for Macaw
+					aiClaim();
+					check();
+				}
+				if(threepattern % 7 == 4/7) {
+					//Train troops for Macaw
+					int armiesProduced = new Random().nextInt(2) + 1;
+					threepower = threepower + armiesProduced;
+					System.out.println("Macaw trained " + armiesProduced + " troops");
+					check();
+				}
+				if(threepattern % 7 == 5/7) {
+					//Develop Infrastructure for Macaw
+					int infrastructureDeveloped = new Random().nextInt(3) + 1;
+					threeoutput = threeoutput + infrastructureDeveloped;
+					System.out.println("Macaw gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
+					check();
+				}
+				if(threepattern % 7 == 6/7) {
+					//Train troops for Macaw
+					int armiesProduced = new Random().nextInt(2) + 1;
+					threepower = threepower + armiesProduced;
+					System.out.println("Macaw trained " + armiesProduced + " troops");
+					check();
+				}
+				if(threepattern % 7 == 0) {
+					//Develop Infrastructure for Macaw
+					int infrastructureDeveloped = new Random().nextInt(3) + 1;
+					threeoutput = threeoutput + infrastructureDeveloped;
+					System.out.println("Macaw gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
+					check();
+				}
+			}
 			// AI Move: Eclectus Parrot
-			// Eclecty will play peacefully - train, dev, dev, claim...
-
+			// Eclecty will play peacefully - train, dev, dev, claim... (4)
+			if(turnOf == 4) {
+				
+			}
 			// Only reason every group starts with train is to ensure that an
 			// early assault is not successful
 
@@ -425,7 +469,8 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 
 	public void train() {
-		onepower++;
+		int armiesTrained = new Random().nextInt(2) + 1;
+		onepower = onepower + armiesTrained;
 		System.out.println("Player trained troops");
 		turnOf = 2;
 		turns++;
