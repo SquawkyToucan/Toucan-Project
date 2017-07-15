@@ -469,6 +469,7 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				if(fourpattern % 4 == 0) {
 					aiClaim();
+					check();
 				}
  			}
 			// Only reason every group starts with train is to ensure that an
