@@ -51,8 +51,8 @@ public class Toucans implements MouseListener, ActionListener {
 	int[] status = new int[36];
 	// Wars available:
 	/**
-	 * 1 - Toucan, Parrot 2 - Toucan, Macaw 3 - Toucan, Eclectus 4 - Parrot,
-	 * Macaw 5 - Macaw, Eclectus 6 - Parrot, Eclectus
+	 * 1 - Toucan, Parrot 2 - Toucan, Macaw 3 - Toucan, Dodo 4 - Parrot,
+	 * Macaw 5 - Macaw, Dodo 6 - Parrot, Dodo
 	 * 
 	 */
 
@@ -143,7 +143,7 @@ public class Toucans implements MouseListener, ActionListener {
 			// like wars, etc.
 			/**
 			 * Toucan starts at 0 - Status is ONE Parrot starts at 5 - Status is
-			 * TWO Macaw starts at 30 - Status is THREE Eclectus Parrot starts
+			 * TWO Macaw starts at 30 - Status is THREE Dodo starts
 			 * at 35 - Status is FOUR
 			 */
 
@@ -446,11 +446,31 @@ public class Toucans implements MouseListener, ActionListener {
 					check();
 				}
 			}
-			// AI Move: Eclectus Parrot
-			// Eclecty will play peacefully - train, dev, dev, claim... (4)
+			// AI Move: Dodo
+			// Dodo will play peacefully - train, dev, dev, claim... (4)
 			if(turnOf == 4) {
-				
-			}
+				if(fourpattern % 4 == 0.25) {
+					int armiesProduced = new Random().nextInt(2) + 1;
+					fourpower = fourpower + armiesProduced;
+					System.out.println("Dodo trained " + armiesProduced + " troops");
+					check();
+				}
+				if(fourpattern % 4 == 0.5) {
+					int infrastructureDeveloped = new Random().nextInt(3) + 1;
+					fouroutput = fouroutput + infrastructureDeveloped;
+					System.out.println("Dodo gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
+					check();
+				}
+				if(fourpattern % 4 == 0.75) {
+					int infrastructureDeveloped = new Random().nextInt(3) + 1;
+					fouroutput = fouroutput + infrastructureDeveloped;
+					System.out.println("Dodo gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
+					check();
+				}
+				if(fourpattern % 4 == 0) {
+					aiClaim();
+				}
+ 			}
 			// Only reason every group starts with train is to ensure that an
 			// early assault is not successful
 
@@ -517,11 +537,11 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			else if(turnOf == 3) {
 				//Macaw is checking
-				System.out.println("Macaw checks action to Eclectus Parrot");
+				System.out.println("Macaw checks action to Dodo");
 			}
 			else if(turnOf == 4) {
-				//Eclectus parrot is checking the action
-				System.out.println("Eclectus Parrot is checking action to player. Your move.");
+				//Dodo is checking the action
+				System.out.println("Dodo is checking action to player. Your move.");
 			}
 		}
 		if(turnOf != 4) {
