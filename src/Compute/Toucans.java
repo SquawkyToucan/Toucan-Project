@@ -148,7 +148,7 @@ public class Toucans implements MouseListener, ActionListener {
 			 */
 
 			// Player, not AI
-			if (turnOf == 1) {
+			if(turnOf == 1) {
 				String move = JOptionPane.showInputDialog(
 						"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
 				if (move.equals("/concede")) {
@@ -156,22 +156,26 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				// Moves that DO NOT require usage of squares WHICH MAKES LIFE
 				// SO MUCH EASIER
-				if (move.equals("/train")) {
+				if(move.equals(null)) {
+					System.out.println("Player pressed cancel. Quitting now...");
+					System.exit(0);
+				}
+				if(move.equals("/train")) {
 					train();
 				}
-				if (move.equals("/develop tech")) {
+				if(move.equals("/develop tech")) {
 					devTech();
 				}
-				if (move.equals("/develop education")) {
+				if(move.equals("/develop education")) {
 					devEdu();
 				}
-				if (move.equals("/develop infrastructure")) {
+				if(move.equals("/develop infrastructure")) {
 					devInfrastructure();
 				}
-				if (move.equals("/endmove")) {
+				if(move.equals("/endmove")) {
 					check();
 				}
-				if (move.contains("/claim")) {
+				if(move.contains("/claim")) {
 					char[] findSquare = move.toCharArray();
 					char column = findSquare[findSquare.length - 2];
 					char row = findSquare[findSquare.length - 1];
@@ -392,6 +396,9 @@ public class Toucans implements MouseListener, ActionListener {
 					check();
 				}
 			}
+			if(turnOf == 3) {
+				
+			}
 
 			// AI Move: Macaw
 			// Macaw will play aggressively - train, claim, claim, train, dev,
@@ -453,8 +460,34 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 
 	public void check() {
-		System.out.println("Player checks action");
-		turnOf = 2;
+		if(turnOf == 1) {
+			//The player is checking the action
+			System.out.println("Player checks action to Parrot");
+		}
+		else {
+			//An AI player is checking the action
+			if(turnOf == 2) {
+				//Parrot checking!
+				System.out.println("Parrot checks action to Macaw");
+			}
+			else if(turnOf == 3) {
+				//Macaw is checking
+				System.out.println("Macaw checks action to Eclectus Parrot");
+			}
+			else if(turnOf == 4) {
+				//Eclectus parrot is checking the action
+				System.out.println("Eclectus Parrot is checking action to player. Your move.");
+			}
+		}
+		if(turnOf != 4) {
+			turnOf++;
+		}
+		else if(turnOf == 4) {
+			turnOf = 1;
+		}
+		else {
+			System.err.println("This program has encountered the following error: the logic operator has failed.");
+		}
 		turns++;
 		System.out.println("\n\nAI playing...");
 		// Backlash n FOUR TIMES on next console action
