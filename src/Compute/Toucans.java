@@ -546,12 +546,15 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 		}
 		if(turnOf != 4) {
+			//The turn can just be given one here - examples: 1 to 2, 2 to 3, 3 to 4
 			turnOf++;
 		}
 		else if(turnOf == 4) {
+			//This is crucial. Without it, the game would transition from 4 to 5 instead of 4 to 1, and because it could never call the method the game would be over
 			turnOf = 1;
 		}
 		else {
+			//This is just for grammar purposes, but I added an Easter Egg just for fun. It shouldn't ever be called.
 			System.err.println("This program has encountered the following error: the logic operator has failed.");
 		}
 		turns++;
