@@ -350,26 +350,46 @@ public class Toucans implements MouseListener, ActionListener {
 
 			}
 			// AI Move: Parrot
-			// Parrot will use rotating int - train, claim, dev, train, claim,
+			// Parrot will use rotating int - claim, train, dev, dev, train, claim,
 			// dev...
 			if (turnOf == 2) {
 				if (twopattern % 6 == 1 / 6) {
 					aiClaim();
+					System.out.println("Parrot claimed a square");
+					check();
 				}
 				if (twopattern % 6 == 1 / 3) {
-
+					//Add in armies (random from 0 to 2);
+					int armiesProduced = new Random().nextInt(3);
+					twopower = twopower + armiesProduced;
+					System.out.println("Parrot trained " + armiesProduced + " units.");
+					check();
 				}
 				if (twopattern % 6 == 1 / 2) {
-
+					//Develop infrastructure for Parrot
+					int developmentAdded = new Random().nextInt(4) + 1;
+					twooutput = twooutput + developmentAdded;
+					System.out.println("Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+					check();
 				}
 				if (twopattern % 6 == 2 / 3) {
-
+					//Develop infrastructure for Parrot
+					int developmentAdded = new Random().nextInt(4) + 1;
+					twooutput = twooutput + developmentAdded;
+					System.out.println("Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+					check();
 				}
 				if (twopattern % 6 == 5 / 6) {
-					aiClaim();
+					//Train some units for Parrot
+					int armiesProduced = new Random().nextInt(3);
+					twopower = twopower + armiesProduced;
+					System.out.println("Parrot trained " + armiesProduced + " units.");
+					check();
 				}
-				if (twopattern % 6 == 1) {
-
+				if (twopattern % 6 == 0) {
+					aiClaim();
+					System.out.println("Parrot claimed a square");
+					check();
 				}
 			}
 
