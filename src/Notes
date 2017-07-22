@@ -4,3 +4,5 @@ Using getNeighbors, find the neighboring squares of each square, and store them 
 Then, eliminate all of the squares that aren't of concern.
 Add the remaining lists to a larger int[]. 
 Pick a random between those.
+
+YEET IT'S WORKING YAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
