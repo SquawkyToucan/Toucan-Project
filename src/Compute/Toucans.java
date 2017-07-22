@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -562,6 +564,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// Backlash n FOUR TIMES on next console action
 	}
 
+	@SuppressWarnings("unchecked")
 	public void aiClaim() {
 		// Step One: At war? If yes, see 1, if no, see 2
 		// 1. Target the enemy
@@ -573,7 +576,100 @@ public class Toucans implements MouseListener, ActionListener {
 
 		// Step One!
 		if (turnOf == 2) {
-
+			if(warOne) {
+				//We are at war with TOUCAN.
+			}
+			else if(warFour) {
+				//We are at war with MACAW.
+			}
+			else if(warSix) {
+				//We are at war with DODO.
+				//If our army is stronger than theirs, attack!
+				if(twopower > fourpower) {
+					//We have more power than them.
+					//This makes attacking a better move and we should do so.
+					
+					//This is the attacking method - it needs a square desperately.
+					
+					int luck = new Random().nextInt(6);
+					int actualLuck = luck - 3;
+					int oppoLuck = new Random().nextInt(2);
+					// Gives options -3 through 3
+					// Battle Numbers - Who Wins?
+					int attackingForce = actualLuck + onepower;
+					int defendingForce = oppoLuck + fourpower;
+					if (attackingForce > defendingForce) {
+						System.out.println("Attackers took square");
+						//Claim the square
+						onepower = onepower - (onepower - fourpower);
+						fourpower = fourpower - (onepower - fourpower + 2);
+						fouroutput = fouroutput - 1;
+					} else if (attackingForce < defendingForce) {
+						System.out.println("Defense remained in control");
+						onepower = onepower - (fourpower - onepower - 1);
+						fourpower = fourpower - (fourpower - onepower + 1);
+						oneoutput = oneoutput - 1;
+					} else {
+						onepower = onepower - 1;
+						fourpower = fourpower - 1;
+						oneoutput = oneoutput - 1;
+						fouroutput = fouroutput - 1;
+						}
+				}
+				else {
+					//Traditionally, we'd claim a different square, but because we're at wartime we should train troops.
+					//Add in armies (random from 0 to 2);
+					int armiesProduced = new Random().nextInt(3);
+					twopower = twopower + armiesProduced;
+					System.out.println("Parrot trained " + armiesProduced + " units.");
+				}
+			}
+			else {
+				@SuppressWarnings("rawtypes")
+				List squaresToClaim = new ArrayList();
+				//We aren't at war with anyone.
+				//Try to stay peaceful by only targeting unoccupied squares.
+				for(int i = 0; i < 36; i++) {
+					//Go through each square. If the value is zero, check if it has a neighbor of PARROT, and add it to the list.
+					if(status[i] == 0) {
+						//Square I is unoccupied. Now we'll check if it has a neighbor that is Parrot to see if the move is legal.
+						if(moveIsLegal(i, 2)) {
+							//The move is legal, so it has two as a neighbor.
+							//Add it to the list of possible claims.
+							squaresToClaim.add(i);
+						}
+						else {
+							//The move is illegal, so this cannot be added to the posibilities.
+							//Go through another iteration.
+						}
+					}
+					else {
+						//This square is occupied.
+						//Go through another iteration.
+					}
+				}
+				//The loop is over! The resulting list will be checked through to find a target.
+				if(squaresToClaim.size() != 1) {
+					//The size is one, so we can just claim that number.
+					status[(int) squaresToClaim.get(0)] = 2;
+				}
+				else {
+					//Pick a random square.
+					int squareToClaim = new Random().nextInt(squaresToClaim.size());
+					status[(int) squaresToClaim.get(squareToClaim)] = 2;
+				}
+				//A square has been claimed. Hooray!
+			}
+		}
+		else if(turnOf == 3) {
+		
+		}
+		else if(turnOf == 4) {
+			
+		}
+		else {
+			//This should never be called. This is just here for grammar purposes.
+			//Unless I mistakenly used ai
 		}
 	}
 
@@ -666,7 +762,7 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 
 	// int i < x.length; so on
-	public boolean moveIsLegal(int square) {
+	public boolean moveIsLegal(int square, int team) {
 		
 		
 		//    !!!!! DO NOT EDIT THIS CODE! IT HAS BEEN PROVEN TO WORK. !!!!
@@ -678,7 +774,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// those and work it out
 		int[] validMovesForAttack = determineNeighbors(square);
 		for (int i = 0; i < validMovesForAttack.length; i++) {
-			if (status[validMovesForAttack[i]] == 1) {
+			if (status[validMovesForAttack[i]] == team) {
 				// Move was legal!!! Attacker came from square that borders it
 				return true;
 			}
