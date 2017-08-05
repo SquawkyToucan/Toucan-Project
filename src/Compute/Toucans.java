@@ -199,13 +199,15 @@ public class Toucans implements MouseListener, ActionListener {
 					if (status[numToCheck] == 0) {
 						status[numToCheck] = 1;
 						System.out.println("Square claimed successfully");
+						check();
 					} else {
 						System.out.println("You can't claim an occupied square, silly!");
+						check();
 					}
 				} else {
 					System.out.println("That square is too far away, silly!");
+					check();
 				}
-				check();
 			}
 			if (move.contains("/attack")) {
 				char[] findSquare = move.toCharArray();
@@ -341,14 +343,13 @@ public class Toucans implements MouseListener, ActionListener {
 					System.err.println("Invalid move! You do not border this square.");
 					check();
 				}
-				turnOf--;
 			}
 			// AI Moves:
 		}
 		// AI Move: Parrot
 		// Parrot will use rotating int - claim, train, dev, dev, train, claim,
 		// dev...
-		if (turnOf == 2) {
+		else if (turnOf == 2) {
 			if (twopattern % 6 == 1) {
 				aiClaim();
 				System.out.println("Parrot claimed a square");
@@ -394,7 +395,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// AI Move: Macaw
 		// Macaw will play aggressively - train, claim, claim, train, dev,
 		// train, dev... (7)
-		if (turnOf == 3) {
+		else if (turnOf == 3) {
 			if (threepattern % 7 == 1) {
 				// Train troops for Macaw
 				int armiesProduced = new Random().nextInt(2) + 1;
@@ -445,7 +446,7 @@ public class Toucans implements MouseListener, ActionListener {
 		}
 		// AI Move: Dodo
 		// Dodo will play peacefully - train, dev, dev, claim... (4)
-		if (turnOf == 4) {
+		else if (turnOf == 4) {
 			if (fourpattern % 4 == 1) {
 				int armiesProduced = new Random().nextInt(2) + 1;
 				fourpower = fourpower + armiesProduced;
