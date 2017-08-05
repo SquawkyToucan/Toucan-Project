@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 public class Toucans implements MouseListener, ActionListener {
 	// Toucans is a strategy game where the goal is to win
 	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K
-	// GDP + dependants, trade), or CIVILIZING
+	// GDP + dependants, trade)
 	// Domination Victory: Every tile on the board is conquered. Enemies are
 	// vanquished.
 	// Economical Victory: A combined sum of trade (per turn), subsidies to
@@ -30,12 +30,7 @@ public class Toucans implements MouseListener, ActionListener {
 	// must control majority of resources
 	// You can die through being CONQUERED or CONCEDING (lit lit lit lit lit)
 	// Death through Conquered: You are taken over by another tribe.
-	// Death through Starvation: Not enough food! (Food is gained via
-	// territory-population ratio. 10 food per square, and ratio must be at
-	// least 5:1)
-	// Death through Lack of Economy: Your economy and currency collapse -
-	// anarchy happens.
-	// Conceding/giving up - Button will be available for this if necessary
+	// Conceding/giving up - This is the command '/concede'
 	JButton[] buttons = new JButton[36];
 	int turnOf = -1;
 	int turns = 0;
