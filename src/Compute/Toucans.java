@@ -506,8 +506,6 @@ public class Toucans implements MouseListener, ActionListener {
 		int armiesTrained = new Random().nextInt(2) + 1;
 		onepower = onepower + armiesTrained;
 		System.out.println("Player trained troops");
-		turnOf = 2;
-		turns++;
 	}
 
 	public void devTech() {
@@ -516,8 +514,6 @@ public class Toucans implements MouseListener, ActionListener {
 		int rand = new Random().nextInt(5);
 		oneoutput = oneoutput + rand;
 		System.out.println("Player gained " + rand + " output");
-		turnOf = 2;
-		turns++;
 	}
 
 	public void devEdu() {
@@ -525,8 +521,6 @@ public class Toucans implements MouseListener, ActionListener {
 		int rand = new Random().nextInt(2);
 		oneoutput = oneoutput + rand + 1;
 		System.out.println("Player gained " + (rand + 1) + " output");
-		turnOf = 2;
-		turns++;
 	}
 
 	public void devInfrastructure() {
@@ -534,8 +528,6 @@ public class Toucans implements MouseListener, ActionListener {
 		oneoutput++;
 		oneoutput++;
 		System.out.println("Player gained 2 output");
-		turnOf = 2;
-		turns++;
 	}
 
 	public void check() {
