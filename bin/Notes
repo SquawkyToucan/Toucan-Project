@@ -1,0 +1,8 @@
+THOUGHT PROCESS:
+
+Using getNeighbors, find the neighboring squares of each square, and store them in individual int[]s.
+Then, eliminate all of the squares that aren't of concern.
+Add the remaining lists to a larger int[]. 
+Pick a random between those.
+
+YEET IT'S WORKING YAAAAAAAAAAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS

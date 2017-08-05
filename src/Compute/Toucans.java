@@ -37,7 +37,7 @@ public class Toucans implements MouseListener, ActionListener {
 	// anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
-	int turnOf = 0;
+	int turnOf = 1;
 	int turns = 0;
 	int onepower = 0;
 	int oneoutput = 0;
@@ -164,15 +164,19 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				if(move.equals("/train")) {
 					train();
+					check();
 				}
 				if(move.equals("/develop tech")) {
 					devTech();
+					check();
 				}
 				if(move.equals("/develop education")) {
 					devEdu();
+					check();
 				}
 				if(move.equals("/develop infrastructure")) {
 					devInfrastructure();
+					check();
 				}
 				if(move.equals("/endmove")) {
 					check();
@@ -204,7 +208,7 @@ public class Toucans implements MouseListener, ActionListener {
 						numToCheck = 29 + notChar;
 					}
 					// Claim or check on
-					if(moveIsLegal(numToCheck)) {
+					if(moveIsLegal(numToCheck, 1)) {
 						if (status[numToCheck] == 0) {
 							status[numToCheck] = 1;
 							System.out.println("Square claimed successfully");
@@ -243,7 +247,7 @@ public class Toucans implements MouseListener, ActionListener {
 					if (column == 'F' || column == 'f') {
 						numToCheck = 29 + notChar;
 					}
-					if (moveIsLegal(numToCheck)) {
+					if (moveIsLegal(numToCheck, 1)) {
 						// The move is legal.
 						// Is square occupied?
 						if (status[numToCheck] == 0 || status[numToCheck] == 1) {
@@ -343,8 +347,8 @@ public class Toucans implements MouseListener, ActionListener {
 									fouroutput = fouroutput - 1;
 								}
 							}
+							
 						}
-						check();
 					}
 					else {
 						//THE MOVE IS ILLEGAL. ALL ACTION PASSED ONTO THE NEXT PLAYER.
@@ -578,6 +582,33 @@ public class Toucans implements MouseListener, ActionListener {
 		if (turnOf == 2) {
 			if(warOne) {
 				//We are at war with TOUCAN.
+				//If our army is stronger than theirs, attack!
+				if(twopower > onepower) {
+					int luck = new Random().nextInt(6);
+					int actualLuck = luck - 3;
+					int oppoLuck = new Random().nextInt(2);
+					// Gives options -3 through 3
+					// Battle Numbers - Who Wins?
+					int attackingForce = actualLuck + twopower;
+					int defendingForce = oppoLuck + onepower;
+					if (attackingForce > defendingForce) {
+						System.out.println("Attackers took square");
+						//Claim the square
+						twopower = twopower - (twopower - onepower);
+						onepower = onepower - (twopower - onepower + 2);
+						fouroutput = fouroutput - 1;
+					} else if (attackingForce < defendingForce) {
+						System.out.println("Defense remained in control");
+						twopower = twopower - (onepower - twopower - 1);
+						onepower = onepower - (onepower - twopower + 1);
+						twooutput = twooutput - 1;
+					} else {
+						twopower = twopower - 1;
+						onepower = onepower - 1;
+						twooutput = twooutput - 1;
+						fouroutput = fouroutput - 1;
+					}
+				}
 			}
 			else if(warFour) {
 				//We are at war with MACAW.
@@ -596,23 +627,23 @@ public class Toucans implements MouseListener, ActionListener {
 					int oppoLuck = new Random().nextInt(2);
 					// Gives options -3 through 3
 					// Battle Numbers - Who Wins?
-					int attackingForce = actualLuck + onepower;
+					int attackingForce = actualLuck + twopower;
 					int defendingForce = oppoLuck + fourpower;
 					if (attackingForce > defendingForce) {
 						System.out.println("Attackers took square");
 						//Claim the square
-						onepower = onepower - (onepower - fourpower);
-						fourpower = fourpower - (onepower - fourpower + 2);
+						twopower = twopower - (twopower - fourpower);
+						fourpower = fourpower - (twopower - fourpower + 2);
 						fouroutput = fouroutput - 1;
 					} else if (attackingForce < defendingForce) {
 						System.out.println("Defense remained in control");
-						onepower = onepower - (fourpower - onepower - 1);
-						fourpower = fourpower - (fourpower - onepower + 1);
+						twopower = twopower - (fourpower - twopower - 1);
+						fourpower = fourpower - (fourpower - twopower + 1);
 						oneoutput = oneoutput - 1;
 					} else {
-						onepower = onepower - 1;
+						twopower = twopower - 1;
 						fourpower = fourpower - 1;
-						oneoutput = oneoutput - 1;
+						twooutput = twooutput - 1;
 						fouroutput = fouroutput - 1;
 						}
 				}
