@@ -1,13 +1,1 @@
-THOUGHT PROCESS:
-
-Using getNeighbors, find the neighboring squares of each square, and store them in individual int[]s.
-Then, eliminate all of the squares that aren't of concern.
-Add the remaining lists to a larger int[]. 
-Pick a random between those.
-
-For some odd reason, Parrot only makes a move every three turns. This is probably a problem with the checking on certain moves. FALSE
-
-No, it isn't - when I run the command "/claim" it always transitions to Parrot. TRUE
-
-This is odd - the code on /claim works perfectly to check action to Parrot rather than screwing up and going straight to Macaw. I'm 
-going to check this out and clone the code that moves /claim to Parrot rather than Macaw.
+Notes:
