@@ -37,7 +37,7 @@ public class Toucans implements MouseListener, ActionListener {
 	// anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
-	int turnOf = 1;
+	int turnOf = 0;
 	int turns = 0;
 	int onepower = 0;
 	int oneoutput = 0;
@@ -53,8 +53,8 @@ public class Toucans implements MouseListener, ActionListener {
 	int[] status = new int[36];
 	// Wars available:
 	/**
-	 * 1 - Toucan, Parrot 2 - Toucan, Macaw 3 - Toucan, Dodo 4 - Parrot,
-	 * Macaw 5 - Macaw, Dodo 6 - Parrot, Dodo
+	 * 1 - Toucan, Parrot 2 - Toucan, Macaw 3 - Toucan, Dodo 4 - Parrot, Macaw 5
+	 * - Macaw, Dodo 6 - Parrot, Dodo
 	 * 
 	 */
 
@@ -63,6 +63,7 @@ public class Toucans implements MouseListener, ActionListener {
 	// AI
 	// This hopefully explains the odd ordering of wars
 
+	// There are currently no wars happening.
 	boolean warOne = false;
 	boolean warTwo = false;
 	boolean warThree = false;
@@ -129,6 +130,357 @@ public class Toucans implements MouseListener, ActionListener {
 		Toucans runner = new Toucans();
 	}
 
+	public void playGame() {
+		// Blitz through the following: use Object to get source of block,
+		// then after Object do is the thing to do
+		// Take object do and do it to object block, be sure to start stuff
+		// like wars, etc.
+		/**
+		 * Toucan starts at 0 - Status is ONE Parrot starts at 5 - Status is TWO
+		 * Macaw starts at 30 - Status is THREE Dodo starts at 35 - Status is
+		 * FOUR
+		 */
+
+		// Player, not AI
+		if (turnOf == 1) {
+			String move = JOptionPane.showInputDialog(
+					"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
+			if (move.equals("/concede")) {
+				concede();
+			}
+			// Moves that DO NOT require usage of squares WHICH MAKES LIFE
+			// SO MUCH EASIER
+			if (move.equals(null)) {
+				System.out.println("Player pressed cancel. Quitting now...");
+				System.exit(0);
+			}
+			if (move.equals("/train")) {
+				train();
+				check();
+			}
+			if (move.equals("/develop tech")) {
+				devTech();
+				check();
+			}
+			if (move.equals("/develop education")) {
+				devEdu();
+				check();
+			}
+			if (move.equals("/develop infrastructure")) {
+				devInfrastructure();
+				check();
+			}
+			if (move.equals("/endmove")) {
+				check();
+			}
+			if (move.contains("/claim")) {
+				char[] findSquare = move.toCharArray();
+				char column = findSquare[findSquare.length - 2];
+				char row = findSquare[findSquare.length - 1];
+				System.out.println(column + " " + row);
+				int notChar = Integer.parseInt(row + "");
+				int numToCheck = 0;
+				// Find numToCheck
+				if (column == 'A' || column == 'a') {
+					numToCheck = -1 + notChar;
+				}
+				if (column == 'B' || column == 'b') {
+					numToCheck = 5 + notChar;
+				}
+				if (column == 'C' || column == 'c') {
+					numToCheck = 11 + notChar;
+				}
+				if (column == 'D' || column == 'd') {
+					numToCheck = 17 + notChar;
+				}
+				if (column == 'E' || column == 'e') {
+					numToCheck = 23 + notChar;
+				}
+				if (column == 'F' || column == 'f') {
+					numToCheck = 29 + notChar;
+				}
+				// Claim or check on
+				if (moveIsLegal(numToCheck, 1)) {
+					if (status[numToCheck] == 0) {
+						status[numToCheck] = 1;
+						System.out.println("Square claimed successfully");
+					} else {
+						System.out.println("You can't claim an occupied square, silly!");
+					}
+				} else {
+					System.out.println("That square is too far away, silly!");
+				}
+				check();
+			}
+			if (move.contains("/attack")) {
+				char[] findSquare = move.toCharArray();
+				char column = findSquare[findSquare.length - 2];
+				char row = findSquare[findSquare.length - 1];
+				System.out.println(column + " " + row);
+				int notChar = Integer.parseInt(row + "");
+				int numToCheck = 0;
+				// Find numToCheck
+				if (column == 'A' || column == 'a') {
+					numToCheck = -1 + notChar;
+				}
+				if (column == 'B' || column == 'b') {
+					numToCheck = 5 + notChar;
+				}
+				if (column == 'C' || column == 'c') {
+					numToCheck = 11 + notChar;
+				}
+				if (column == 'D' || column == 'd') {
+					numToCheck = 17 + notChar;
+				}
+				if (column == 'E' || column == 'e') {
+					numToCheck = 23 + notChar;
+				}
+				if (column == 'F' || column == 'f') {
+					numToCheck = 29 + notChar;
+				}
+				if (moveIsLegal(numToCheck, 1)) {
+					// The move is legal.
+					// Is square occupied?
+					if (status[numToCheck] == 0 || status[numToCheck] == 1) {
+						System.out.println(
+								"Error attacking square: No occupying army to attack, or this square belongs to you");
+						if (status[numToCheck] != 1) {
+							int claimInstead = JOptionPane.showConfirmDialog(null,
+									"Do you want to claim this square instead?");
+							if (claimInstead == JOptionPane.YES_OPTION) {
+								status[numToCheck] = 1;
+								System.out.println("Square claimed!");
+							} else {
+								System.out.println("Square not taken!");
+								check();
+							}
+						} else {
+							System.out.println(
+									"This square is yours! If you want to end the game, play /concede on your next move");
+						}
+					} else {
+						// Attacking the square!
+						if (status[numToCheck] == 2) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							// Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(3);
+							// Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + twopower;
+							if (attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - twopower);
+								twopower = twopower - (onepower - twopower + 2);
+								twooutput = twooutput - 1;
+							} else if (attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (twopower - onepower - 1);
+								twopower = twopower - (twopower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							} else {
+								onepower = onepower - 1;
+								twopower = twopower - 1;
+								oneoutput = oneoutput - 1;
+								twooutput = twooutput - 1;
+							}
+						}
+						if (status[numToCheck] == 3) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							// Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(2);
+							// Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + threepower;
+							if (attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - threepower);
+								threepower = threepower - (onepower - threepower + 2);
+								threeoutput = threeoutput - 1;
+							} else if (attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (threepower - onepower - 1);
+								threepower = threepower - (threepower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							} else {
+								onepower = onepower - 1;
+								threepower = threepower - 1;
+								oneoutput = oneoutput - 1;
+								threeoutput = threeoutput - 1;
+							}
+						}
+						if (status[numToCheck] == 4) {
+							int luck = new Random().nextInt(6);
+							int actualLuck = luck - 3;
+							// Gives options -3 through 3
+							int oppoLuck = new Random().nextInt(2);
+							// Battle Numbers - Who Wins?
+							int attackingForce = actualLuck + onepower;
+							int defendingForce = oppoLuck + fourpower;
+							if (attackingForce > defendingForce) {
+								System.out.println("Attackers took square");
+								status[numToCheck] = 1;
+								onepower = onepower - (onepower - fourpower);
+								fourpower = fourpower - (onepower - fourpower + 2);
+								fouroutput = fouroutput - 1;
+							} else if (attackingForce < defendingForce) {
+								System.out.println("Defense remained in control");
+								onepower = onepower - (fourpower - onepower - 1);
+								fourpower = fourpower - (fourpower - onepower + 1);
+								oneoutput = oneoutput - 1;
+							} else {
+								onepower = onepower - 1;
+								fourpower = fourpower - 1;
+								oneoutput = oneoutput - 1;
+								fouroutput = fouroutput - 1;
+							}
+						}
+
+					}
+				} else {
+					// THE MOVE IS ILLEGAL. ALL ACTION PASSED ONTO THE NEXT
+					// PLAYER.
+					System.err.println("Invalid move! You do not border this square.");
+					check();
+				}
+				turnOf--;
+			}
+			// AI Moves:
+		}
+		// AI Move: Parrot
+		// Parrot will use rotating int - claim, train, dev, dev, train, claim,
+		// dev...
+		if (turnOf == 2) {
+			if (twopattern % 6 == 1) {
+				aiClaim();
+				System.out.println("Parrot claimed a square");
+				check();
+			}
+			if (twopattern % 6 == 2) {
+				// Add in armies (random from 0 to 2);
+				int armiesProduced = new Random().nextInt(3);
+				twopower = twopower + armiesProduced;
+				System.out.println("Parrot trained " + armiesProduced + " units.");
+				check();
+			}
+			if (twopattern % 6 == 3) {
+				// Develop infrastructure for Parrot
+				int developmentAdded = new Random().nextInt(4) + 1;
+				twooutput = twooutput + developmentAdded;
+				System.out.println(
+						"Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+				check();
+			}
+			if (twopattern % 6 == 4) {
+				// Develop infrastructure for Parrot
+				int developmentAdded = new Random().nextInt(4) + 1;
+				twooutput = twooutput + developmentAdded;
+				System.out.println(
+						"Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+				check();
+			}
+			if (twopattern % 6 == 5) {
+				// Train some units for Parrot
+				int armiesProduced = new Random().nextInt(3);
+				twopower = twopower + armiesProduced;
+				System.out.println("Parrot trained " + armiesProduced + " units.");
+				check();
+			}
+			if (twopattern % 6 == 0) {
+				aiClaim();
+				System.out.println("Parrot claimed a square");
+				check();
+			}
+			twopattern++;
+		}
+		// AI Move: Macaw
+		// Macaw will play aggressively - train, claim, claim, train, dev,
+		// train, dev... (7)
+		if (turnOf == 3) {
+			if (threepattern % 7 == 1) {
+				// Train troops for Macaw
+				int armiesProduced = new Random().nextInt(2) + 1;
+				threepower = threepower + armiesProduced;
+				System.out.println("Macaw trained " + armiesProduced + " troops");
+				check();
+			}
+			if (threepattern % 7 == 2) {
+				// Claim a square for Macaw
+				aiClaim();
+				check();
+			}
+			if (threepattern % 7 == 3) {
+				// Claim a square for Macaw
+				aiClaim();
+				check();
+			}
+			if (threepattern % 7 == 4) {
+				// Train troops for Macaw
+				int armiesProduced = new Random().nextInt(2) + 1;
+				threepower = threepower + armiesProduced;
+				System.out.println("Macaw trained " + armiesProduced + " troops");
+				check();
+			}
+			if (threepattern % 7 == 5) {
+				// Develop Infrastructure for Macaw
+				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				threeoutput = threeoutput + infrastructureDeveloped;
+				System.out.println("Macaw gained " + infrastructureDeveloped
+						+ "K in economic boosts and infrastructure development.");
+				check();
+			}
+			if (threepattern % 7 == 6) {
+				// Train troops for Macaw
+				int armiesProduced = new Random().nextInt(2) + 1;
+				threepower = threepower + armiesProduced;
+				System.out.println("Macaw trained " + armiesProduced + " troops");
+				check();
+			}
+			if (threepattern % 7 == 0) {
+				// Develop Infrastructure for Macaw
+				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				threeoutput = threeoutput + infrastructureDeveloped;
+				System.out.println("Macaw gained " + infrastructureDeveloped
+						+ "K in economic boosts and infrastructure development.");
+				check();
+			}
+		}
+		// AI Move: Dodo
+		// Dodo will play peacefully - train, dev, dev, claim... (4)
+		if (turnOf == 4) {
+			if (fourpattern % 4 == 1) {
+				int armiesProduced = new Random().nextInt(2) + 1;
+				fourpower = fourpower + armiesProduced;
+				System.out.println("Dodo trained " + armiesProduced + " troops");
+				check();
+			}
+			if (fourpattern % 4 == 2) {
+				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				fouroutput = fouroutput + infrastructureDeveloped;
+				System.out.println("Dodo gained " + infrastructureDeveloped
+						+ "K in economic boosts and infrastructure development.");
+				check();
+			}
+			if (fourpattern % 4 == 3) {
+				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				fouroutput = fouroutput + infrastructureDeveloped;
+				System.out.println("Dodo gained " + infrastructureDeveloped
+						+ "K in economic boosts and infrastructure development.");
+				check();
+			}
+			if (fourpattern % 4 == 0) {
+				aiClaim();
+				check();
+			}
+		}
+		// Only reason every group starts with train is to ensure that an
+		// early assault is not successful
+
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (!boardInitialized) {
@@ -139,348 +491,7 @@ public class Toucans implements MouseListener, ActionListener {
 			status[30] = 3;
 			status[35] = 4;
 		} else {
-			// Blitz through the following: use Object to get source of block,
-			// then after Object do is the thing to do
-			// Take object do and do it to object block, be sure to start stuff
-			// like wars, etc.
-			/**
-			 * Toucan starts at 0 - Status is ONE Parrot starts at 5 - Status is
-			 * TWO Macaw starts at 30 - Status is THREE Dodo starts
-			 * at 35 - Status is FOUR
-			 */
-
-			// Player, not AI
-			if(turnOf == 1) {
-				String move = JOptionPane.showInputDialog(
-						"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
-				if (move.equals("/concede")) {
-					concede();
-				}
-				// Moves that DO NOT require usage of squares WHICH MAKES LIFE
-				// SO MUCH EASIER
-				if(move.equals(null)) {
-					System.out.println("Player pressed cancel. Quitting now...");
-					System.exit(0);
-				}
-				if(move.equals("/train")) {
-					train();
-					check();
-				}
-				if(move.equals("/develop tech")) {
-					devTech();
-					check();
-				}
-				if(move.equals("/develop education")) {
-					devEdu();
-					check();
-				}
-				if(move.equals("/develop infrastructure")) {
-					devInfrastructure();
-					check();
-				}
-				if(move.equals("/endmove")) {
-					check();
-				}
-				if(move.contains("/claim")) {
-					char[] findSquare = move.toCharArray();
-					char column = findSquare[findSquare.length - 2];
-					char row = findSquare[findSquare.length - 1];
-					System.out.println(column + " " + row);
-					int notChar = Integer.parseInt(row + "");
-					int numToCheck = 0;
-					// Find numToCheck
-					if (column == 'A' || column == 'a') {
-						numToCheck = -1 + notChar;
-					}
-					if (column == 'B' || column == 'b') {
-						numToCheck = 5 + notChar;
-					}
-					if (column == 'C' || column == 'c') {
-						numToCheck = 11 + notChar;
-					}
-					if (column == 'D' || column == 'd') {
-						numToCheck = 17 + notChar;
-					}
-					if (column == 'E' || column == 'e') {
-						numToCheck = 23 + notChar;
-					}
-					if (column == 'F' || column == 'f') {
-						numToCheck = 29 + notChar;
-					}
-					// Claim or check on
-					if(moveIsLegal(numToCheck, 1)) {
-						if (status[numToCheck] == 0) {
-							status[numToCheck] = 1;
-							System.out.println("Square claimed successfully");
-						} else {
-							System.out.println("You can't claim an occupied square, silly!");
-						}
-					}
-					else {
-						System.out.println("That square is too far away, silly!");
-					}
-					check();
-				}
-				if (move.contains("/attack")) {
-					char[] findSquare = move.toCharArray();
-					char column = findSquare[findSquare.length - 2];
-					char row = findSquare[findSquare.length - 1];
-					System.out.println(column + " " + row);
-					int notChar = Integer.parseInt(row + "");
-					int numToCheck = 0;
-					// Find numToCheck
-					if (column == 'A' || column == 'a') {
-						numToCheck = -1 + notChar;
-					}
-					if (column == 'B' || column == 'b') {
-						numToCheck = 5 + notChar;
-					}
-					if (column == 'C' || column == 'c') {
-						numToCheck = 11 + notChar;
-					}
-					if (column == 'D' || column == 'd') {
-						numToCheck = 17 + notChar;
-					}
-					if (column == 'E' || column == 'e') {
-						numToCheck = 23 + notChar;
-					}
-					if (column == 'F' || column == 'f') {
-						numToCheck = 29 + notChar;
-					}
-					if (moveIsLegal(numToCheck, 1)) {
-						// The move is legal.
-						// Is square occupied?
-						if (status[numToCheck] == 0 || status[numToCheck] == 1) {
-							System.out.println(
-									"Error attacking square: No occupying army to attack, or this square belongs to you");
-							if (status[numToCheck] != 1) {
-								int claimInstead = JOptionPane.showConfirmDialog(null,
-										"Do you want to claim this square instead?");
-								if (claimInstead == JOptionPane.YES_OPTION) {
-									status[numToCheck] = 1;
-									System.out.println("Square claimed!");
-								} else {
-									System.out.println("Square not taken!");
-									check();
-								}
-							} else {
-								System.out.println(
-										"This square is yours! If you want to end the game, play /concede on your next move");
-							}
-						} else {
-							// Attacking the square! 
-							if (status[numToCheck] == 2) {
-								int luck = new Random().nextInt(6);
-								int actualLuck = luck - 3;
-								// Gives options -3 through 3
-								int oppoLuck = new Random().nextInt(3);
-								// Battle Numbers - Who Wins?
-								int attackingForce = actualLuck + onepower;
-								int defendingForce = oppoLuck + twopower;
-								if (attackingForce > defendingForce) {
-									System.out.println("Attackers took square");
-									status[numToCheck] = 1;
-									onepower = onepower - (onepower - twopower);
-									twopower = twopower - (onepower - twopower + 2);
-									twooutput = twooutput - 1;
-								} else if (attackingForce < defendingForce) {
-									System.out.println("Defense remained in control");
-									onepower = onepower - (twopower - onepower - 1);
-									twopower = twopower - (twopower - onepower + 1);
-									oneoutput = oneoutput - 1;
-								} else {
-									onepower = onepower - 1;
-									twopower = twopower - 1;
-									oneoutput = oneoutput - 1;
-									twooutput = twooutput - 1;
-								}
-							}
-							if (status[numToCheck] == 3) {
-								int luck = new Random().nextInt(6);
-								int actualLuck = luck - 3;
-								// Gives options -3 through 3
-								int oppoLuck = new Random().nextInt(2);
-								// Battle Numbers - Who Wins?
-								int attackingForce = actualLuck + onepower;
-								int defendingForce = oppoLuck + threepower;
-								if (attackingForce > defendingForce) {
-									System.out.println("Attackers took square");
-									status[numToCheck] = 1;
-									onepower = onepower - (onepower - threepower);
-									threepower = threepower - (onepower - threepower + 2);
-									threeoutput = threeoutput - 1;
-								} else if (attackingForce < defendingForce) {
-									System.out.println("Defense remained in control");
-									onepower = onepower - (threepower - onepower - 1);
-									threepower = threepower - (threepower - onepower + 1);
-									oneoutput = oneoutput - 1;
-								} else {
-									onepower = onepower - 1;
-									threepower = threepower - 1;
-									oneoutput = oneoutput - 1;
-									threeoutput = threeoutput - 1;
-								}
-							}
-							if (status[numToCheck] == 4) {
-								int luck = new Random().nextInt(6);
-								int actualLuck = luck - 3;
-								// Gives options -3 through 3
-								int oppoLuck = new Random().nextInt(2);
-								// Battle Numbers - Who Wins?
-								int attackingForce = actualLuck + onepower;
-								int defendingForce = oppoLuck + fourpower;
-								if (attackingForce > defendingForce) {
-									System.out.println("Attackers took square");
-									status[numToCheck] = 1;
-									onepower = onepower - (onepower - fourpower);
-									fourpower = fourpower - (onepower - fourpower + 2);
-									fouroutput = fouroutput - 1;
-								} else if (attackingForce < defendingForce) {
-									System.out.println("Defense remained in control");
-									onepower = onepower - (fourpower - onepower - 1);
-									fourpower = fourpower - (fourpower - onepower + 1);
-									oneoutput = oneoutput - 1;
-								} else {
-									onepower = onepower - 1;
-									fourpower = fourpower - 1;
-									oneoutput = oneoutput - 1;
-									fouroutput = fouroutput - 1;
-								}
-							}
-							
-						}
-					}
-					else {
-						//THE MOVE IS ILLEGAL. ALL ACTION PASSED ONTO THE NEXT PLAYER.
-						System.err.println("Invalid move! You do not border this square.");
-						check();
-					}
-				}
-				// AI Moves:
-			}
-			// AI Move: Parrot
-			// Parrot will use rotating int - claim, train, dev, dev, train, claim,
-			// dev...
-			if (turnOf == 2) {
-				if(twopattern % 6 == 1 / 6) {
-					aiClaim();
-					System.out.println("Parrot claimed a square");
-					check();
-				}
-				if(twopattern % 6 == 1 / 3) {
-					//Add in armies (random from 0 to 2);
-					int armiesProduced = new Random().nextInt(3);
-					twopower = twopower + armiesProduced;
-					System.out.println("Parrot trained " + armiesProduced + " units.");
-					check();
-				}
-				if(twopattern % 6 == 1 / 2) {
-					//Develop infrastructure for Parrot
-					int developmentAdded = new Random().nextInt(4) + 1;
-					twooutput = twooutput + developmentAdded;
-					System.out.println("Parrot added " + developmentAdded + " development in infrastructure and the economy.");
-					check();
-				}
-				if(twopattern % 6 == 2 / 3) {
-					//Develop infrastructure for Parrot
-					int developmentAdded = new Random().nextInt(4) + 1;
-					twooutput = twooutput + developmentAdded;
-					System.out.println("Parrot added " + developmentAdded + " development in infrastructure and the economy.");
-					check();
-				}
-				if(twopattern % 6 == 5 / 6) {
-					//Train some units for Parrot
-					int armiesProduced = new Random().nextInt(3);
-					twopower = twopower + armiesProduced;
-					System.out.println("Parrot trained " + armiesProduced + " units.");
-					check();
-				}
-				if(twopattern % 6 == 0) {
-					aiClaim();
-					System.out.println("Parrot claimed a square");
-					check();
-				}
-				twopattern++;
-			}
-			// AI Move: Macaw
-			// Macaw will play aggressively - train, claim, claim, train, dev,
-			// train, dev... (7)
-			if(turnOf == 3) {
-				if(threepattern % 7 == 1/7) {
-					//Train troops for Macaw
-					int armiesProduced = new Random().nextInt(2) + 1;
-					threepower = threepower + armiesProduced;
-					System.out.println("Macaw trained " + armiesProduced + " troops");
-					check();
-				}
-				if(threepattern % 7 == 2/7) {
-					//Claim a square for Macaw
-					aiClaim();
-					check();
-				}
-				if(threepattern % 7 == 3/7) {
-					//Claim a square for Macaw
-					aiClaim();
-					check();
-				}
-				if(threepattern % 7 == 4/7) {
-					//Train troops for Macaw
-					int armiesProduced = new Random().nextInt(2) + 1;
-					threepower = threepower + armiesProduced;
-					System.out.println("Macaw trained " + armiesProduced + " troops");
-					check();
-				}
-				if(threepattern % 7 == 5/7) {
-					//Develop Infrastructure for Macaw
-					int infrastructureDeveloped = new Random().nextInt(3) + 1;
-					threeoutput = threeoutput + infrastructureDeveloped;
-					System.out.println("Macaw gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
-					check();
-				}
-				if(threepattern % 7 == 6/7) {
-					//Train troops for Macaw
-					int armiesProduced = new Random().nextInt(2) + 1;
-					threepower = threepower + armiesProduced;
-					System.out.println("Macaw trained " + armiesProduced + " troops");
-					check();
-				}
-				if(threepattern % 7 == 0) {
-					//Develop Infrastructure for Macaw
-					int infrastructureDeveloped = new Random().nextInt(3) + 1;
-					threeoutput = threeoutput + infrastructureDeveloped;
-					System.out.println("Macaw gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
-					check();
-				}
-			}
-			// AI Move: Dodo
-			// Dodo will play peacefully - train, dev, dev, claim... (4)
-			if(turnOf == 4) {
-				if(fourpattern % 4 == 0.25) {
-					int armiesProduced = new Random().nextInt(2) + 1;
-					fourpower = fourpower + armiesProduced;
-					System.out.println("Dodo trained " + armiesProduced + " troops");
-					check();
-				}
-				if(fourpattern % 4 == 0.5) {
-					int infrastructureDeveloped = new Random().nextInt(3) + 1;
-					fouroutput = fouroutput + infrastructureDeveloped;
-					System.out.println("Dodo gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
-					check();
-				}
-				if(fourpattern % 4 == 0.75) {
-					int infrastructureDeveloped = new Random().nextInt(3) + 1;
-					fouroutput = fouroutput + infrastructureDeveloped;
-					System.out.println("Dodo gained " + infrastructureDeveloped + "K in economic boosts and infrastructure development.");
-					check();
-				}
-				if(fourpattern % 4 == 0) {
-					aiClaim();
-					check();
-				}
- 			}
-			// Only reason every group starts with train is to ensure that an
-			// early assault is not successful
-
+			playGame();
 		}
 	}
 
@@ -532,35 +543,34 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 
 	public void check() {
-		if(turnOf == 1) {
-			//The player is checking the action
+		if (turnOf == 1) {
+			// The player is checking the action
 			System.out.println("Player checks action to Parrot");
-		}
-		else {
-			//An AI player is checking the action
-			if(turnOf == 2) {
-				//Parrot checking!
+		} else {
+			// An AI player is checking the action
+			if (turnOf == 2) {
+				// Parrot checking!
 				System.out.println("Parrot checks action to Macaw");
-			}
-			else if(turnOf == 3) {
-				//Macaw is checking
+			} else if (turnOf == 3) {
+				// Macaw is checking
 				System.out.println("Macaw checks action to Dodo");
-			}
-			else if(turnOf == 4) {
-				//Dodo is checking the action
+			} else if (turnOf == 4) {
+				// Dodo is checking the action
 				System.out.println("Dodo is checking action to player. Your move.");
 			}
 		}
-		if(turnOf != 4) {
-			//The turn can just be given one here - examples: 1 to 2, 2 to 3, 3 to 4
+		if (turnOf != 4) {
+			// The turn can just be given one here - examples: 1 to 2, 2 to 3, 3
+			// to 4
 			turnOf++;
-		}
-		else if(turnOf == 4) {
-			//This is crucial. Without it, the game would transition from 4 to 5 instead of 4 to 1, and because it could never call the method the game would be over
+		} else if (turnOf == 4) {
+			// This is crucial. Without it, the game would transition from 4 to
+			// 5 instead of 4 to 1, and because it could never call the method
+			// the game would be over
 			turnOf = 1;
-		}
-		else {
-			//This is just for grammar purposes, but I added an Easter Egg just for fun. It shouldn't ever be called.
+		} else {
+			// This is just for grammar purposes, but I added an Easter Egg just
+			// for fun. It shouldn't ever be called.
 			System.err.println("This program has encountered the following error: the logic operator has failed.");
 		}
 		turns++;
@@ -580,10 +590,10 @@ public class Toucans implements MouseListener, ActionListener {
 
 		// Step One!
 		if (turnOf == 2) {
-			if(warOne) {
-				//We are at war with TOUCAN.
-				//If our army is stronger than theirs, attack!
-				if(twopower > onepower) {
+			if (warOne) {
+				// We are at war with TOUCAN.
+				// If our army is stronger than theirs, attack!
+				if (twopower > onepower) {
 					int luck = new Random().nextInt(6);
 					int actualLuck = luck - 3;
 					int oppoLuck = new Random().nextInt(2);
@@ -593,7 +603,7 @@ public class Toucans implements MouseListener, ActionListener {
 					int defendingForce = oppoLuck + onepower;
 					if (attackingForce > defendingForce) {
 						System.out.println("Attackers took square");
-						//Claim the square
+						// Claim the square
 						twopower = twopower - (twopower - onepower);
 						onepower = onepower - (twopower - onepower + 2);
 						fouroutput = fouroutput - 1;
@@ -609,19 +619,18 @@ public class Toucans implements MouseListener, ActionListener {
 						fouroutput = fouroutput - 1;
 					}
 				}
-			}
-			else if(warFour) {
-				//We are at war with MACAW.
-			}
-			else if(warSix) {
-				//We are at war with DODO.
-				//If our army is stronger than theirs, attack!
-				if(twopower > fourpower) {
-					//We have more power than them.
-					//This makes attacking a better move and we should do so.
-					
-					//This is the attacking method - it needs a square desperately.
-					
+			} else if (warFour) {
+				// We are at war with MACAW.
+			} else if (warSix) {
+				// We are at war with DODO.
+				// If our army is stronger than theirs, attack!
+				if (twopower > fourpower) {
+					// We have more power than them.
+					// This makes attacking a better move and we should do so.
+
+					// This is the attacking method - it needs a square
+					// desperately.
+
 					int luck = new Random().nextInt(6);
 					int actualLuck = luck - 3;
 					int oppoLuck = new Random().nextInt(2);
@@ -631,7 +640,7 @@ public class Toucans implements MouseListener, ActionListener {
 					int defendingForce = oppoLuck + fourpower;
 					if (attackingForce > defendingForce) {
 						System.out.println("Attackers took square");
-						//Claim the square
+						// Claim the square
 						twopower = twopower - (twopower - fourpower);
 						fourpower = fourpower - (twopower - fourpower + 2);
 						fouroutput = fouroutput - 1;
@@ -645,62 +654,60 @@ public class Toucans implements MouseListener, ActionListener {
 						fourpower = fourpower - 1;
 						twooutput = twooutput - 1;
 						fouroutput = fouroutput - 1;
-						}
-				}
-				else {
-					//Traditionally, we'd claim a different square, but because we're at wartime we should train troops.
-					//Add in armies (random from 0 to 2);
+					}
+				} else {
+					// Traditionally, we'd claim a different square, but because
+					// we're at wartime we should train troops.
+					// Add in armies (random from 0 to 2);
 					int armiesProduced = new Random().nextInt(3);
 					twopower = twopower + armiesProduced;
 					System.out.println("Parrot trained " + armiesProduced + " units.");
 				}
-			}
-			else {
+			} else {
 				@SuppressWarnings("rawtypes")
 				List squaresToClaim = new ArrayList();
-				//We aren't at war with anyone.
-				//Try to stay peaceful by only targeting unoccupied squares.
-				for(int i = 0; i < 36; i++) {
-					//Go through each square. If the value is zero, check if it has a neighbor of PARROT, and add it to the list.
-					if(status[i] == 0) {
-						//Square I is unoccupied. Now we'll check if it has a neighbor that is Parrot to see if the move is legal.
-						if(moveIsLegal(i, 2)) {
-							//The move is legal, so it has two as a neighbor.
-							//Add it to the list of possible claims.
+				// We aren't at war with anyone.
+				// Try to stay peaceful by only targeting unoccupied squares.
+				for (int i = 0; i < 36; i++) {
+					// Go through each square. If the value is zero, check if it
+					// has a neighbor of PARROT, and add it to the list.
+					if (status[i] == 0) {
+						// Square I is unoccupied. Now we'll check if it has a
+						// neighbor that is Parrot to see if the move is legal.
+						if (moveIsLegal(i, 2)) {
+							// The move is legal, so it has two as a neighbor.
+							// Add it to the list of possible claims.
 							squaresToClaim.add(i);
+						} else {
+							// The move is illegal, so this cannot be added to
+							// the posibilities.
+							// Go through another iteration.
 						}
-						else {
-							//The move is illegal, so this cannot be added to the posibilities.
-							//Go through another iteration.
-						}
-					}
-					else {
-						//This square is occupied.
-						//Go through another iteration.
+					} else {
+						// This square is occupied.
+						// Go through another iteration.
 					}
 				}
-				//The loop is over! The resulting list will be checked through to find a target.
-				if(squaresToClaim.size() != 1) {
-					//The size is one, so we can just claim that number.
+				// The loop is over! The resulting list will be checked through
+				// to find a target.
+				if (squaresToClaim.size() != 1) {
+					// The size is one, so we can just claim that number.
 					status[(int) squaresToClaim.get(0)] = 2;
-				}
-				else {
-					//Pick a random square.
+				} else {
+					// Pick a random square.
 					int squareToClaim = new Random().nextInt(squaresToClaim.size());
 					status[(int) squaresToClaim.get(squareToClaim)] = 2;
 				}
-				//A square has been claimed. Hooray!
+				// A square has been claimed. Hooray!
 			}
-		}
-		else if(turnOf == 3) {
-		
-		}
-		else if(turnOf == 4) {
-			
-		}
-		else {
-			//This should never be called. This is just here for grammar purposes.
-			//Unless I mistakenly used ai
+		} else if (turnOf == 3) {
+
+		} else if (turnOf == 4) {
+
+		} else {
+			// This should never be called. This is just here for grammar
+			// purposes.
+			// Unless I mistakenly used ai
 		}
 	}
 
@@ -794,11 +801,9 @@ public class Toucans implements MouseListener, ActionListener {
 
 	// int i < x.length; so on
 	public boolean moveIsLegal(int square, int team) {
-		
-		
-		//    !!!!! DO NOT EDIT THIS CODE! IT HAS BEEN PROVEN TO WORK. !!!!
-		
-		
+
+		// !!!!! DO NOT EDIT THIS CODE! IT HAS BEEN PROVEN TO WORK. !!!!
+
 		// Find Options for attacking - go through for() loop to determine if
 		// the move is legal
 		// Go backwards! Rework the unit to find all of the neighbors, then take
@@ -812,7 +817,7 @@ public class Toucans implements MouseListener, ActionListener {
 		}
 		// The method has been ran through with no success.
 		// The move is invalidated
-		//Player will check action in the real life
+		// Player will check action in the real life
 		return false;
 	}
 
