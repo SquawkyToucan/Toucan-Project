@@ -618,6 +618,51 @@ public class Toucans implements MouseListener, ActionListener {
 
 					// This is the attacking method - it needs a square
 					// desperately.
+					int squareToAttack;
+					@SuppressWarnings("rawtypes")
+					List squaresToClaim = new ArrayList();
+					// We aren't at war with anyone.
+					// Try to stay peaceful by only targeting unoccupied
+					// squares.
+					// (This move could be used for the purpose of finding a
+					// square to attack with the exception that you'd find
+					// a square that belonged to the enemy)
+					for (int i = 0; i < 36; i++) {
+						// Go through each square. If the value is zero, check
+						// if it
+						// has a neighbor of PARROT, and add it to the list.
+						if (status[i] == 4) {
+							// Square I is unoccupied. Now we'll check if it has
+							// a
+							// neighbor that is Parrot to see if the move is
+							// legal.
+							if (moveIsLegal(i, 2)) {
+								// The move is legal, so it has two as a
+								// neighbor.
+								// Add it to the list of possible claims.
+								squaresToClaim.add(i);
+							} else {
+								// The move is illegal, so this cannot be added
+								// to
+								// the posibilities.
+								// Go through another iteration.
+							}
+						} else {
+							// This square is occupied.
+							// Go through another iteration.
+						}
+					}
+					// The loop is over! The resulting list will be checked
+					// through
+					// to find a target.
+					if (squaresToClaim.size() != 1) {
+						// The size is one, so we can just claim that number.
+						squareToAttack = (int) squaresToClaim.get(0);
+					} else {
+						// Pick a random square.
+						int squareToClaim = new Random().nextInt(squaresToClaim.size());
+						squareToAttack = (int) squaresToClaim.get(squareToClaim);
+					}
 
 					int luck = new Random().nextInt(6);
 					int actualLuck = luck - 3;
@@ -628,7 +673,7 @@ public class Toucans implements MouseListener, ActionListener {
 					int defendingForce = oppoLuck + fourpower;
 					if (attackingForce > defendingForce) {
 						System.out.println("Attackers took square");
-						// Claim the square
+						status[squareToAttack] = 2;
 						twopower = twopower - (twopower - fourpower);
 						fourpower = fourpower - (twopower - fourpower + 2);
 						fouroutput = fouroutput - 1;
@@ -656,6 +701,9 @@ public class Toucans implements MouseListener, ActionListener {
 				List squaresToClaim = new ArrayList();
 				// We aren't at war with anyone.
 				// Try to stay peaceful by only targeting unoccupied squares.
+				// (This move could be used for the purpose of finding a square
+				// to attack with the exception that you'd find
+				// a square that belonged to the enemy)
 				for (int i = 0; i < 36; i++) {
 					// Go through each square. If the value is zero, check if it
 					// has a neighbor of PARROT, and add it to the list.
@@ -696,6 +744,7 @@ public class Toucans implements MouseListener, ActionListener {
 			// This should never be called. This is just here for grammar
 			// purposes.
 			// Unless I mistakenly used ai
+			System.err.println("The logic operator failed me.");
 		}
 	}
 
