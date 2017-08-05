@@ -37,7 +37,7 @@ public class Toucans implements MouseListener, ActionListener {
 	// anarchy happens.
 	// Conceding/giving up - Button will be available for this if necessary
 	JButton[] buttons = new JButton[36];
-	int turnOf = 0;
+	int turnOf = -1;
 	int turns = 0;
 	int onepower = 0;
 	int oneoutput = 0;
