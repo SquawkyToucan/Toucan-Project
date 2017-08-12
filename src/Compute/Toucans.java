@@ -3,15 +3,19 @@ package Compute;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -87,10 +91,12 @@ public class Toucans implements MouseListener, ActionListener {
 		turns++;
 	}
 
+	JFrame frame = new JFrame();
+
 	public void createBoard() {
 		int locx = 0;
 		int locy = 0;
-		JFrame frame = new JFrame();
+
 		frame.add(playpanel);
 		frame.setSize(600, 600);
 		frame.getContentPane().setBackground(new Color(0, 153, 85));
@@ -101,6 +107,7 @@ public class Toucans implements MouseListener, ActionListener {
 			buttons[i].setPreferredSize(new Dimension(100, 100));
 			buttons[i].setLocation(locx * 100, locy * 100 + 100);
 			buttons[i].setVisible(true);
+			buttons[i].setOpaque(true);
 			buttons[i].addMouseListener(this);
 			buttons[i].setBorder(BorderFactory.createLineBorder(new Color(0, 153, 87), 2));
 			locx++;
@@ -110,6 +117,7 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			playpanel.add(buttons[i]);
 		}
+		// frame.pack();
 		frame.setVisible(true);
 	}
 
@@ -138,6 +146,8 @@ public class Toucans implements MouseListener, ActionListener {
 
 		// Player, not AI
 		if (turnOf == 1) {
+			loadImages();
+			updateGraphics();
 			String move = JOptionPane.showInputDialog(
 					"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
 			if (move.equals("/concede")) {
@@ -564,6 +574,50 @@ public class Toucans implements MouseListener, ActionListener {
 		turns++;
 		System.out.println("\n\nAI playing...");
 		// Backlash n FOUR TIMES on next console action
+	}
+
+	ImageIcon toucanImage;
+	ImageIcon unclaimedImage;
+	ImageIcon parrotImage;
+	ImageIcon macawImage;
+	ImageIcon dodoImage;
+
+	public void loadImages() {
+		try {
+			Image toucanImg = ImageIO.read(getClass().getResource("Toucan.png"));
+			Image parrotImg = ImageIO.read(getClass().getResource("Parrot.png"));
+			Image macawImg = ImageIO.read(getClass().getResource("Macaw.png"));
+			Image dodoImg = ImageIO.read(getClass().getResource("Dodo.png"));
+			Image unclaimedImg = ImageIO.read(getClass().getResource("Unclaimed.png"));
+			toucanImage = new ImageIcon(toucanImg);
+			unclaimedImage = new ImageIcon(unclaimedImg);
+			parrotImage = new ImageIcon(parrotImg);
+			macawImage = new ImageIcon(macawImg);
+			dodoImage = new ImageIcon(dodoImg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void updateGraphics() {
+		for (int i = 0; i < 36; i++) {
+			if (status[i] == 0) {
+				buttons[i].setIcon(unclaimedImage);
+			} else if (status[i] == 1) {
+				buttons[i].setIcon(toucanImage);
+			} else if (status[i] == 2) {
+				buttons[i].setIcon(parrotImage);
+			} else if (status[i] == 3) {
+				buttons[i].setIcon(macawImage);
+			} else if (status[i] == 4) {
+				buttons[i].setIcon(dodoImage);
+			} else {
+				// This should never be called.
+			}
+			buttons[i].repaint();
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
