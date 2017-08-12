@@ -360,6 +360,8 @@ public class Toucans implements MouseListener, ActionListener {
 		// Parrot will use rotating int - claim, train, dev, dev, train, claim,
 		// dev...
 		else if (turnOf == 2) {
+			loadImages();
+			updateGraphics();
 			if (twopattern % 6 == 1) {
 				aiClaim();
 				System.out.println("Parrot claimed a square");
@@ -406,6 +408,8 @@ public class Toucans implements MouseListener, ActionListener {
 		// Macaw will play aggressively - train, claim, claim, train, dev,
 		// train, dev... (7)
 		else if (turnOf == 3) {
+			loadImages();
+			updateGraphics();
 			if (threepattern % 7 == 1) {
 				// Train troops for Macaw
 				int armiesProduced = new Random().nextInt(2) + 1;
@@ -457,6 +461,8 @@ public class Toucans implements MouseListener, ActionListener {
 		// AI Move: Dodo
 		// Dodo will play peacefully - train, dev, dev, claim... (4)
 		else if (turnOf == 4) {
+			loadImages();
+			updateGraphics();
 			if (fourpattern % 4 == 1) {
 				int armiesProduced = new Random().nextInt(2) + 1;
 				fourpower = fourpower + armiesProduced;
