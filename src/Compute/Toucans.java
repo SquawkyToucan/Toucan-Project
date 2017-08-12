@@ -23,8 +23,8 @@ import javax.swing.JPanel;
 
 public class Toucans implements MouseListener, ActionListener {
 	// Toucans is a strategy game where the goal is to win
-	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY (35K
-	// GDP + dependants, trade)
+	// You can win through DOMINATION (35 tiles), TECH (35 points), ECONOMY
+	// (350,000 K GDP (sounds hard, but with 20 squares it won't be)
 	// Domination Victory: Every tile on the board is conquered. Enemies are
 	// vanquished.
 	// Economical Victory: A combined sum of trade (per turn), subsidies to
