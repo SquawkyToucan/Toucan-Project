@@ -528,22 +528,23 @@ public class Toucans implements MouseListener, ActionListener {
 		// Tech is a gamble. You can win big (+5) or waste a turn (0), or turn
 		// out somewhere in between.
 		int rand = new Random().nextInt(5);
-		oneoutput = oneoutput + rand;
-		System.out.println("Player gained " + rand + " output");
+		int add = rand * getNumberOfSquares(1);
+		oneoutput = oneoutput + add;
+		System.out.println("Player gained " + add + " output");
 	}
 
 	public void devEdu() {
 		// Education earns less on gambling but is always positive
-		int rand = new Random().nextInt(2);
-		oneoutput = oneoutput + rand + 1;
-		System.out.println("Player gained " + (rand + 1) + " output");
+		int rand = new Random().nextInt(2) + 1;
+		int add = rand * getNumberOfSquares(1);
+		oneoutput = oneoutput + add;
+		System.out.println("Player gained " + add + " output");
 	}
 
 	public void devInfrastructure() {
 		// Infrastructure is a solid investment but only gains 1
-		oneoutput++;
-		oneoutput++;
-		System.out.println("Player gained 2 output");
+		oneoutput = oneoutput * getNumberOfSquares(1);
+		System.out.println("Player gained " + (2*getNumberOfSquares(1)) + " output");
 	}
 
 	public void check() {
@@ -916,6 +917,47 @@ public class Toucans implements MouseListener, ActionListener {
 		// The move is invalidated
 		// Player will check action in the real life
 		return false;
+	}
+	public int getNumberOfSquares(int team) {
+		int squaresOfTeam = 0;
+		for(int i = 0; i < 36; i++) {
+			if(team == 1) {
+				if(status[i] == 1) {
+					squaresOfTeam++;
+				}
+				else {
+					//Don't do anything here - the int doesn't need to change.
+				}
+			}
+			else if(team == 2) {
+				if(status[i] == 2) {
+					squaresOfTeam++;
+				}
+				else {
+					//Don't do anything here - the int doesn't need to change.
+				}
+			}
+			else if(team == 3) {
+				if(status[i] == 3) {
+					squaresOfTeam++;
+				}
+				else {
+					//Don't do anything here - the int doesn't need to change.
+				}
+			}
+			else if(team == 4) {
+				if(status[i] == 4) {
+					squaresOfTeam++;
+				}
+				else {
+					//Don't do anything here - the int doesn't need to change.
+				}
+			}
+			else {
+				//Only for grammar
+			}
+		}
+		return squaresOfTeam;
 	}
 
 	@Override
