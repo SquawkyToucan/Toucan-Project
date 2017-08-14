@@ -436,7 +436,7 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			if (threepattern % 7 == 5) {
 				// Develop Infrastructure for Macaw
-				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				int infrastructureDeveloped = (new Random().nextInt(3) + 1) * getNumberOfSquares(3);
 				threeoutput = threeoutput + infrastructureDeveloped;
 				System.out.println("Macaw gained " + infrastructureDeveloped
 						+ "K in economic boosts and infrastructure development.");
@@ -451,12 +451,13 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			if (threepattern % 7 == 0) {
 				// Develop Infrastructure for Macaw
-				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				int infrastructureDeveloped = (new Random().nextInt(3) + 1) * getNumberOfSquares(3);
 				threeoutput = threeoutput + infrastructureDeveloped;
 				System.out.println("Macaw gained " + infrastructureDeveloped
 						+ "K in economic boosts and infrastructure development.");
 				check();
 			}
+			threepattern++;
 		}
 		// AI Move: Dodo
 		// Dodo will play peacefully - train, dev, dev, claim... (4)
@@ -470,14 +471,14 @@ public class Toucans implements MouseListener, ActionListener {
 				check();
 			}
 			if (fourpattern % 4 == 2) {
-				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				int infrastructureDeveloped = (new Random().nextInt(3) + 1) * getNumberOfSquares(4);
 				fouroutput = fouroutput + infrastructureDeveloped;
 				System.out.println("Dodo gained " + infrastructureDeveloped
 						+ "K in economic boosts and infrastructure development.");
 				check();
 			}
 			if (fourpattern % 4 == 3) {
-				int infrastructureDeveloped = new Random().nextInt(3) + 1;
+				int infrastructureDeveloped = (new Random().nextInt(3) + 1) * getNumberOfSquares(4);
 				fouroutput = fouroutput + infrastructureDeveloped;
 				System.out.println("Dodo gained " + infrastructureDeveloped
 						+ "K in economic boosts and infrastructure development.");
@@ -487,6 +488,7 @@ public class Toucans implements MouseListener, ActionListener {
 				aiClaim();
 				check();
 			}
+			fourpattern++;
 		}
 		// Only reason every group starts with train is to ensure that an
 		// early assault is not successful
