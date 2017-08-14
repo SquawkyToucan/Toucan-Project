@@ -376,18 +376,18 @@ public class Toucans implements MouseListener, ActionListener {
 			}
 			if (twopattern % 6 == 3) {
 				// Develop infrastructure for Parrot
-				int developmentAdded = new Random().nextInt(4) + 1;
+				int developmentAdded = (new Random().nextInt(4) + 1) * getNumberOfSquares(2);
 				twooutput = twooutput + developmentAdded;
 				System.out.println(
-						"Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+						"Parrot added " + (developmentAdded) + " development in infrastructure and the economy.");
 				check();
 			}
 			if (twopattern % 6 == 4) {
 				// Develop infrastructure for Parrot
 				int developmentAdded = new Random().nextInt(4) + 1;
-				twooutput = twooutput + developmentAdded;
+				twooutput = twooutput + developmentAdded * getNumberOfSquares(2);
 				System.out.println(
-						"Parrot added " + developmentAdded + " development in infrastructure and the economy.");
+						"Parrot added " + (developmentAdded * getNumberOfSquares(2)) + " development in infrastructure and the economy.");
 				check();
 			}
 			if (twopattern % 6 == 5) {
