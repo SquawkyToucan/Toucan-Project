@@ -954,7 +954,7 @@ public class Toucans implements MouseListener, ActionListener {
 						// a
 						// neighbor that is Parrot to see if the move is
 						// legal.
-						if (moveIsLegal(i, 2)) {
+						if (moveIsLegal(i, 3)) {
 							// The move is legal, so it has two as a
 							// neighbor.
 							// Add it to the list of possible claims.
