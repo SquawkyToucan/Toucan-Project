@@ -1014,9 +1014,12 @@ public class Toucans implements MouseListener, ActionListener {
 					//We don't have more power. Traditionally, we'd claim another square.
 					//However, because we're at war, we'll train troops.
 					int armiesProduced = new Random().nextInt(3);
-					twopower = twopower + armiesProduced;
-					System.out.println("Parrot trained " + armiesProduced + " units.");
+					threepower = threepower + armiesProduced;
+					System.out.println("Macaw trained " + armiesProduced + " units.");
 				}
+			}
+			else if(warFour) {
+				
 			}
 		} else if (turnOf == 4) {
 
