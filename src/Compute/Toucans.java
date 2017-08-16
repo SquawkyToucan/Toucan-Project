@@ -923,7 +923,29 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				// The loop is over! The resulting list will be checked through
 				// to find a target.
-				if (squaresToClaim.size() != 1) {
+				if(squaresToClaim.size() == 0) {
+					//Pick a square next to me and go with it.
+					for(int i = 0; i < 36; i++) {
+						if(moveIsLegal(i, 2)) {
+							if(status[i] == 1) {
+								warOne = true;
+								System.out.println("Parrot declared war on Toucan for infringing on its sovereign territory.");
+							}
+							else if(status[i] == 3) {
+								warFour = true;
+								System.out.println("Parrot declared war on Macaw for infringing on its sovereign territory.");
+							}
+							else if(status[i] == 4) {
+								warSix = true;
+								System.out.println("Parrot declared war on Dodo for infringing on its sovereign territory.");
+							}
+							else {
+								status[i] = 2;
+							}
+						}
+					}
+				}
+				else if (squaresToClaim.size() != 1) {
 					// The size is one, so we can just claim that number.
 					status[(int) squaresToClaim.get(0)] = 2;
 				} else {
