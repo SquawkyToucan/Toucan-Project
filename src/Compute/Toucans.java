@@ -930,17 +930,17 @@ public class Toucans implements MouseListener, ActionListener {
 							if(status[i] == 1) {
 								warOne = true;
 								System.out.println("Parrot declared war on Toucan for infringing on its sovereign territory.");
+								break;
 							}
 							else if(status[i] == 3) {
 								warFour = true;
 								System.out.println("Parrot declared war on Macaw for infringing on its sovereign territory.");
+								break;
 							}
 							else if(status[i] == 4) {
 								warSix = true;
 								System.out.println("Parrot declared war on Dodo for infringing on its sovereign territory.");
-							}
-							else {
-								status[i] = 2;
+								break;
 							}
 						}
 					}
@@ -1239,6 +1239,28 @@ public class Toucans implements MouseListener, ActionListener {
 				}
 				// The loop is over! The resulting list will be checked through
 				// to find a target.
+				if (squaresToClaim.size() == 0) {
+					//Declare war on the first tribe.
+					for(int i = 0; i < 36; i++) {
+						if(moveIsLegal(i, 3)) {
+							if(status[i] == 1) {
+								warTwo = true;
+								System.out.println("Macaw has decided to take up arms to defend their sovereign territory from Toucan.");
+								break;
+							}
+							else if(status[i] == 2) {
+								warFour = true;
+								System.out.println("Macaw has decided to take up arms to defend their sovereign territory from Parrot.");
+								break;
+							}
+							else if(status[i] == 4) {
+								warFive = true;
+								System.out.println("Macaw has decided to take up arms to defend their sovereign territory from Dodo");
+								break;
+							}
+						}
+					}
+				}
 				if (squaresToClaim.size() != 1) {
 					// The size is one, so we can just claim that number.
 					status[(int) squaresToClaim.get(0)] = 3;
