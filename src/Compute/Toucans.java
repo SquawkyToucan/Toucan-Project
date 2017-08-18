@@ -1322,29 +1322,29 @@ public class Toucans implements MouseListener, ActionListener {
 
 				// We are at war with TOUCAN.
 				// If our army is stronger than theirs, attack!
-				if (threepower > onepower) {
+				if (fourpower > onepower) {
 					int luck = new Random().nextInt(6);
 					int actualLuck = luck - 3;
 					int oppoLuck = new Random().nextInt(2);
 					// Gives options -3 through 3
 					// Battle Numbers - Who Wins?
-					int attackingForce = actualLuck + threepower;
+					int attackingForce = actualLuck + fourpower;
 					int defendingForce = oppoLuck + onepower;
 					if (attackingForce > defendingForce) {
 						System.out.println("Attackers took square");
-						status[squareToAttack] = 3;
-						threepower = threepower - (threepower - onepower);
-						onepower = onepower - (threepower - onepower + 2);
+						status[squareToAttack] = 4;
+						fourpower = fourpower - (fourpower - onepower);
+						onepower = onepower - (fourpower - onepower + 2);
 						oneoutput = oneoutput - 1;
 					} else if (attackingForce < defendingForce) {
 						System.out.println("Defense remained in control");
-						threepower = threepower - (threepower - onepower - 1);
-						onepower = onepower - (onepower - threepower + 1);
-						threeoutput = threeoutput - 1;
+						fourpower = fourpower - (fourpower - onepower - 1);
+						onepower = onepower - (onepower - fourpower + 1);
+						fouroutput = fouroutput - 1;
 					} else {
-						threepower = threepower - 1;
+						fourpower = fourpower - 1;
 						onepower = onepower - 1;
-						threeoutput = threeoutput - 1;
+						fouroutput = fouroutput - 1;
 						oneoutput = oneoutput - 1;
 					}
 				}
@@ -1353,17 +1353,237 @@ public class Toucans implements MouseListener, ActionListener {
 					//However, because we're at war, we'll train troops.
 					int armiesProduced = new Random().nextInt(3);
 					fourpower = fourpower + armiesProduced;
-					System.out.println("Macaw trained " + armiesProduced + " units.");
+					System.out.println("Dodo trained " + armiesProduced + " units.");
 				}
 			}
 			else if(warFive) {
 				//We are at war with MACAW.
+				int squareToAttack;
+				@SuppressWarnings("rawtypes")
+				List squaresToClaim = new ArrayList();
+				// We aren't at war with anyone.
+				// Try to stay peaceful by only targeting unoccupied
+				// squares.
+				// (This move could be used for the purpose of finding a
+				// square to attack with the exception that you'd find
+				// a square that belonged to the enemy)
+				for (int i = 0; i < 36; i++) {
+					// Go through each square. If the value is zero, check
+					// if it
+					// has a neighbor of PARROT, and add it to the list.
+					if (status[i] == 3) {
+						// Square I is unoccupied. Now we'll check if it has
+						// a
+						// neighbor that is Parrot to see if the move is
+						// legal.
+						if (moveIsLegal(i, 4)) {
+							// The move is legal, so it has two as a
+							// neighbor.
+							// Add it to the list of possible claims.
+							squaresToClaim.add(i);
+						} else {
+							// The move is illegal, so this cannot be added
+							// to
+							// the posibilities.
+							// Go through another iteration.
+						}
+					} else {
+						// This square is occupied.
+						// Go through another iteration.
+					}
+				}
+				// The loop is over! The resulting list will be checked
+				// through
+				// to find a target.
+				if (squaresToClaim.size() != 1) {
+					// The size is one, so we can just claim that number.
+					squareToAttack = (int) squaresToClaim.get(0);
+				} else {
+					// Pick a random square.
+					int squareToClaim = new Random().nextInt(squaresToClaim.size());
+					squareToAttack = (int) squaresToClaim.get(squareToClaim);
+				}
+
+				// We are at war with TOUCAN.
+				// If our army is stronger than theirs, attack!
+				if (fourpower > threepower) {
+					int luck = new Random().nextInt(6);
+					int actualLuck = luck - 3;
+					int oppoLuck = new Random().nextInt(2);
+					// Gives options -3 through 3
+					// Battle Numbers - Who Wins?
+					int attackingForce = actualLuck + fourpower;
+					int defendingForce = oppoLuck + threepower;
+					if (attackingForce > defendingForce) {
+						System.out.println("Attackers took square");
+						status[squareToAttack] = 4;
+						fourpower = fourpower - (fourpower - threepower);
+						threepower = threepower - (fourpower - threepower + 2);
+						threeoutput = threeoutput - 1;
+					} else if (attackingForce < defendingForce) {
+						System.out.println("Defense remained in control");
+						fourpower = fourpower - (fourpower - threepower - 1);
+						threepower = threepower - (threepower - fourpower + 1);
+						fouroutput = fouroutput - 1;
+					} else {
+						fourpower = fourpower - 1;
+						threepower = threepower - 1;
+						fouroutput = fouroutput - 1;
+						threeoutput = threeoutput - 1;
+					}
+				}
+				else {
+					//We don't have more power. Traditionally, we'd claim another square.
+					//However, because we're at war, we'll train troops.
+					int armiesProduced = new Random().nextInt(3);
+					fourpower = fourpower + armiesProduced;
+					System.out.println("Dodo trained " + armiesProduced + " units.");
+				}
 			}
 			else if(warSix) {
 				//We are at war with PARROT.
+				int squareToAttack;
+				@SuppressWarnings("rawtypes")
+				List squaresToClaim = new ArrayList();
+				// We aren't at war with anyone.
+				// Try to stay peaceful by only targeting unoccupied
+				// squares.
+				// (This move could be used for the purpose of finding a
+				// square to attack with the exception that you'd find
+				// a square that belonged to the enemy)
+				for (int i = 0; i < 36; i++) {
+					// Go through each square. If the value is zero, check
+					// if it
+					// has a neighbor of PARROT, and add it to the list.
+					if (status[i] == 2) {
+						// Square I is unoccupied. Now we'll check if it has
+						// a
+						// neighbor that is Parrot to see if the move is
+						// legal.
+						if (moveIsLegal(i, 4)) {
+							// The move is legal, so it has two as a
+							// neighbor.
+							// Add it to the list of possible claims.
+							squaresToClaim.add(i);
+						} else {
+							// The move is illegal, so this cannot be added
+							// to
+							// the posibilities.
+							// Go through another iteration.
+						}
+					} else {
+						// This square is occupied.
+						// Go through another iteration.
+					}
+				}
+				// The loop is over! The resulting list will be checked
+				// through
+				// to find a target.
+				if (squaresToClaim.size() != 1) {
+					// The size is one, so we can just claim that number.
+					squareToAttack = (int) squaresToClaim.get(0);
+				} else {
+					// Pick a random square.
+					int squareToClaim = new Random().nextInt(squaresToClaim.size());
+					squareToAttack = (int) squaresToClaim.get(squareToClaim);
+				}
+
+				// We are at war with TOUCAN.
+				// If our army is stronger than theirs, attack!
+				if (fourpower > threepower) {
+					int luck = new Random().nextInt(6);
+					int actualLuck = luck - 3;
+					int oppoLuck = new Random().nextInt(2);
+					// Gives options -3 through 3
+					// Battle Numbers - Who Wins?
+					int attackingForce = actualLuck + fourpower;
+					int defendingForce = oppoLuck + twopower;
+					if (attackingForce > defendingForce) {
+						System.out.println("Attackers took square");
+						status[squareToAttack] = 4;
+						fourpower = fourpower - (fourpower - twopower);
+						twopower = twopower - (fourpower - twopower + 2);
+						twooutput = twooutput - 1;
+					} else if (attackingForce < defendingForce) {
+						System.out.println("Defense remained in control");
+						fourpower = fourpower - (fourpower - twopower - 1);
+						twopower = twopower - (twopower - fourpower + 1);
+						fouroutput = fouroutput - 1;
+					} else {
+						fourpower = fourpower - 1;
+						twopower = twopower - 1;
+						fouroutput = fouroutput - 1;
+						twooutput = twooutput - 1;
+					}
+				}
+				else {
+					//We don't have more power. Traditionally, we'd claim another square.
+					//However, because we're at war, we'll train troops.
+					int armiesProduced = new Random().nextInt(3);
+					fourpower = fourpower + armiesProduced;
+					System.out.println("Dodo trained " + armiesProduced + " units.");
+				}
 			}
 			else {
-				
+				@SuppressWarnings("rawtypes")
+				List squaresToClaim = new ArrayList();
+				// We aren't at war with anyone.
+				// Try to stay peaceful by only targeting unoccupied squares.
+				// (This move could be used for the purpose of finding a square
+				// to attack with the exception that you'd find
+				// a square that belonged to the enemy)
+				for (int i = 0; i < 36; i++) {
+					// Go through each square. If the value is zero, check if it
+					// has a neighbor of PARROT, and add it to the list.
+					if (status[i] == 0) {
+						// Square I is unoccupied. Now we'll check if it has a
+						// neighbor that is Parrot to see if the move is legal.
+						if (moveIsLegal(i, 4)) {
+							// The move is legal, so it has two as a neighbor.
+							// Add it to the list of possible claims.
+							squaresToClaim.add(i);
+						} else {
+							// The move is illegal, so this cannot be added to
+							// the posibilities.
+							// Go through another iteration.
+						}
+					} else {
+						// This square is occupied.
+						// Go through another iteration.
+					}
+				}
+				// The loop is over! The resulting list will be checked through
+				// to find a target.
+				if (squaresToClaim.size() == 0) {
+					//Declare war on the first tribe.
+					for(int i = 0; i < 36; i++) {
+						if(moveIsLegal(i, 4)) {
+							if(status[i] == 1) {
+								warThree = true;
+								System.out.println("Dodo reluctantly goes to war with Toucan after they refuse to stand down on territorial claims.");
+								break;
+							}
+							else if(status[i] == 2) {
+								warFive = true;
+								System.out.println("Dodo reluctantly goes to war with Parrot after they refuse to stand down on territorial claims.");
+								break;
+							}
+							else if(status[i] == 3) {
+								warSix = true;
+								System.out.println("Dodo reluctantly goes to war with Macaw after they refuse to stand down on territorial claims.");
+								break;
+							}
+						}
+					}
+				}
+				if (squaresToClaim.size() != 1) {
+					// The size is one, so we can just claim that number.
+					status[(int) squaresToClaim.get(0)] = 4;
+				} else {
+					// Pick a random square.
+					int squareToClaim = new Random().nextInt(squaresToClaim.size());
+					status[(int) squaresToClaim.get(squareToClaim)] = 4;
+				}
 			}
 		} else {
 			// This should never be called. This is just here for grammar
