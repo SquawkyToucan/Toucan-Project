@@ -35,6 +35,10 @@ public class Toucans implements MouseListener, ActionListener {
 	// You can die through being CONQUERED or CONCEDING (lit lit lit lit lit)
 	// Death through Conquered: You are taken over by another tribe.
 	// Conceding/giving up - This is the command '/concede'
+	boolean toucanIsAlive = true;
+	boolean parrotIsAlive = true;
+	boolean macawIsAlive = true;
+	boolean dodoIsAlive = true;
 	JButton[] buttons = new JButton[36];
 	int turnOf = -1;
 	int turns = 0;
@@ -145,7 +149,7 @@ public class Toucans implements MouseListener, ActionListener {
 		 */
 
 		// Player, not AI
-		if (turnOf == 1) {
+		if (turnOf == 1 && toucanIsAlive) {
 			loadImages();
 			updateGraphics();
 			String move = JOptionPane.showInputDialog(
@@ -366,7 +370,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// AI Move: Parrot
 		// Parrot will use rotating int - claim, train, dev, dev, train, claim,
 		// dev...
-		else if (turnOf == 2) {
+		else if (turnOf == 2&&parrotIsAlive) {
 			loadImages();
 			updateGraphics();
 			if (twopattern % 6 == 1) {
@@ -414,7 +418,7 @@ public class Toucans implements MouseListener, ActionListener {
 		// AI Move: Macaw
 		// Macaw will play aggressively - train, claim, claim, train, dev,
 		// train, dev... (7)
-		else if (turnOf == 3) {
+		else if (turnOf == 3&&macawIsAlive) {
 			loadImages();
 			updateGraphics();
 			if (threepattern % 7 == 1) {
@@ -468,7 +472,7 @@ public class Toucans implements MouseListener, ActionListener {
 		}
 		// AI Move: Dodo
 		// Dodo will play peacefully - train, dev, dev, claim... (4)
-		else if (turnOf == 4) {
+		else if (turnOf == 4&&dodoIsAlive) {
 			loadImages();
 			updateGraphics();
 			if (fourpattern % 4 == 1) {
@@ -557,31 +561,69 @@ public class Toucans implements MouseListener, ActionListener {
 	}
 
 	public void check() {
+		updateLife();
+		checkForWinner();
 		if (turnOf == 1) {
 			// The player is checking the action
-			System.out.println("Player checks action to Parrot");
+			System.out.println("Player checks action");
 		} else {
 			// An AI player is checking the action
 			if (turnOf == 2) {
 				// Parrot checking!
-				System.out.println("Parrot checks action to Macaw");
+				System.out.println("Parrot checks action");
 			} else if (turnOf == 3) {
 				// Macaw is checking
-				System.out.println("Macaw checks action to Dodo");
+				System.out.println("Macaw checks action");
 			} else if (turnOf == 4) {
 				// Dodo is checking the action
-				System.out.println("Dodo is checking action to player. Your move.");
+				System.out.println("Dodo checks action");
 			}
 		}
-		if (turnOf != 4) {
+		if (turnOf == 1) {
 			// The turn can just be given one here - examples: 1 to 2, 2 to 3, 3
 			// to 4
-			turnOf++;
+			if(parrotIsAlive) {
+				turnOf = 2;
+			}
+			else if(macawIsAlive) {
+				turnOf = 3;
+			}
+			else {
+				turnOf = 4;
+			}
+		} else if(turnOf == 2) {
+			if(macawIsAlive) {
+				turnOf = 3;
+			}
+			else if(dodoIsAlive) {
+				turnOf = 4;
+			}
+			else {
+				turnOf = 1;
+			}
+		} else if (turnOf == 3) {
+			if(dodoIsAlive) {
+				turnOf = 4;
+			}
+			else if(toucanIsAlive) {
+				turnOf = 1;
+			}
+			else {
+				turnOf = 2;
+			}
 		} else if (turnOf == 4) {
 			// This is crucial. Without it, the game would transition from 4 to
 			// 5 instead of 4 to 1, and because it could never call the method
 			// the game would be over
-			turnOf = 1;
+			if(toucanIsAlive) {
+				turnOf = 1;
+			}
+			else if(parrotIsAlive) {
+				turnOf = 2;
+			}
+			else {
+				turnOf = 3;
+			}
 		} else {
 			// This is just for grammar purposes, but I added an Easter Egg just
 			// for fun. It shouldn't ever be called.
@@ -1599,7 +1641,39 @@ public class Toucans implements MouseListener, ActionListener {
 			System.err.println("The logic operator failed me.");
 		}
 	}
-
+	public boolean checkIfIsAlive(int team) {
+		for(int i = 0; i < 36; i++) {
+			if(status[i] == team) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public void updateLife() {
+		toucanIsAlive = checkIfIsAlive(1);
+		parrotIsAlive = checkIfIsAlive(2);
+		macawIsAlive = checkIfIsAlive(3);
+		dodoIsAlive = checkIfIsAlive(4);
+	}
+	public void checkForWinner() {
+		if((toucanIsAlive&&!parrotIsAlive&&!macawIsAlive&&!dodoIsAlive)||oneoutput > 3500) {
+			JOptionPane.showMessageDialog(null, "Toucan wins!");
+			System.exit(0);
+		}
+		else if((!toucanIsAlive&&parrotIsAlive&&!macawIsAlive&&!dodoIsAlive)||twooutput > 3500) {
+			JOptionPane.showMessageDialog(null, "Parrot wins!");
+			System.exit(0);
+		}
+		else if((!toucanIsAlive&&!parrotIsAlive&&macawIsAlive&&!dodoIsAlive)||threeoutput > 3500) {
+			JOptionPane.showMessageDialog(null, "Macaw wins!");
+			System.exit(0);
+		}
+		else if((!toucanIsAlive&&!parrotIsAlive&&!macawIsAlive&&dodoIsAlive)||fouroutput > 3500) {
+			JOptionPane.showMessageDialog(null, "Dodo wins!");
+			System.exit(0);
+		}
+		
+	}
 	public int[] determineNeighbors(int square) {
 		int[] nums;
 		if (square != 0 && square != 1 && square != 2 && square != 3 && square != 4 && square != 5 && square != 6
