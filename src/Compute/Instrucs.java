@@ -10,9 +10,11 @@ public class Instrucs {
 	JPanel panel = new JPanel();
 	JLabel rule = new JLabel();
 	public Instrucs() {
-		rule.setText("Welcome to my game.\n\nThe goal of the game\nis to take over the square...\n\nor gain a strong economy\nwith a GDP of over 350,000.\n\nYour economy grows with /develop\n\nTech gives you a gain between 0 and 5K\n\nEducation, between 1 and 3\n\nand infrastructure gives a solid two - \n\nwhich is then multiplied by your amount of squares.\n\nTrain using /train\n\nEvery time you click, the AI will play.\nClick in between your turns.\nYou can see what they're doing in the console.\n\nGood luck!");
+		rule.setText("<html>Welcome to my game.<br><br>The goal of the game<br>is to take over the square...<br><br>or gain a strong economy<br>with a GDP of over 350,000.<br><br>Your economy grows with /develop<br><br>Tech gives you a gain between 0 and 5K<br><br>Education, between 1 and 3<br><br>and infrastructure gives a solid two - <br><br>which is then multiplied by your amount of squares.<br><br>Train using /train<br><br>Every time you click, the AI will play.<br>Click in between your turns.<br>You can see what they're doing in the console.<br><br>Good luck!</html>");
 		panel.add(rule);
+		panel.setSize(600, 800);
 		frame.add(panel);
+		frame.pack();
 		frame.setVisible(true);
 	}
 }
