@@ -149,9 +149,12 @@ public class Toucans implements MouseListener, ActionListener {
 			loadImages();
 			updateGraphics();
 			String move = JOptionPane.showInputDialog(
-					"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /concede - Quit");
+					"Action to Perform:\n- /claim - Claim a square\n- /attack - Attack a claimed square\n- /develop <infrastructure, tech, education> - Will boost output\n- /train - Train troops\n- /endmove - End move\n- /help - See the rules and instructions\n- /concede - Quit");
 			if (move.equals("/concede")) {
 				concede();
+			}
+			if(move.equals("/help")) {
+				Instrucs in = new Instrucs();
 			}
 			// Moves that DO NOT require usage of squares WHICH MAKES LIFE
 			// SO MUCH EASIER
