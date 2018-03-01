@@ -158,7 +158,7 @@ public class Toucans implements MouseListener, ActionListener {
 				concede();
 			}
 			if(move.equals("/help")) {
-				Instrucs in = new Instrucs();
+				new Instrucs();
 			}
 			// Moves that DO NOT require usage of squares WHICH MAKES LIFE
 			// SO MUCH EASIER
